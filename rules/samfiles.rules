@@ -23,6 +23,7 @@ rule samtools_merge_bam:
         "envs/samtools_merge_bam.yaml"
     benchmark:
         "benchmarks/samtools/merge/{sample}.txt"
-    shell:
-        "samtools merge {output} {input}")
+    script:
+        "scripts/samtools_merge_bam.py"
+
         
