@@ -46,12 +46,19 @@ else
    exit 1
 fi
 
+if [ -f ".git_repo_last_commit" ]
+then
+   cp .git_repo_last_commit "${SM_WORK_DIR}"
+fi
+
 PROJECT_NAME="_project_name_"
 source activate ${PROJECT_NAME}
 
 SHORTNAME=${PROJECT_NAME:0:1}${PROJECT_NAME: -1}
 
-snakemake --use-conda \
+if [ -f 'cluster.json' ]
+then
+    snakemake --use-conda \
           --stats stats.json \
           --configfile ${CONFIG_FILEPATH} \
           --directory ${SM_WORK_DIR} \
@@ -63,10 +70,16 @@ snakemake --use-conda \
           --jobname ${SHORTNAME}".{rulename}.{jobid}.sh" \
           --jobs 64 \
           --drmaa ' -S /bin/bash {cluster.hosts_group} -w n -b y -V ' \
-          ${SM_PARAMETERS} \
-          --drmaa-log-dir "logs/ge"
-
-if [ -f ".git_repo_last_commit" ]
-then
-   cp .git_repo_last_commit "${SM_WORK_DIR}"
+	  --drmaa-log-dir "logs/ge" \
+          ${SM_PARAMETERS}
+else
+     snakemake --use-conda \
+          --stats stats.json \
+          --configfile ${CONFIG_FILEPATH} \
+          --directory ${SM_WORK_DIR} \
+          --printshellcmds \
+	  ${SM_PARAMETERS}
 fi
+ 
+          
+
