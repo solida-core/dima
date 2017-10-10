@@ -1,0 +1,22 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
+
+
+"""
+Rules for modifying SAM or BAM files.
+"""
+
+rule picard_SortSam:
+   input:
+       "mapped_reads/sam/{unit}.sam"
+   output:
+       temp("mapped_reads/bam/{unit}_sorted.bam")
+   conda:
+       "envs/picard_SortSam.yaml"
+   params:
+        custom=java_params(tmp_dir=config.get("tmp_dir")),
+   benchmark:
+       "benchmarks/picard/SortSam/{unit}.txt"
+   shell:
+       "picard {params.custom} SortSam I={input} O={output} SO=coordinate"
+
