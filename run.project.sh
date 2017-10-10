@@ -36,6 +36,12 @@ shift $((OPTIND - 1))
 
 [ -z ${SM_WORK_DIR:=$(date +%F_%s)} ]
 
+if [ ! -d ${SM_WORK_DIR} ]; then
+  # Control will enter here if $DIRECTORY doesn't exist.
+  mkdir ${SM_WORK_DIR}
+fi
+
+
 if [ -f "$CONFIG_FILE" ]
 then
    CONFIG_FILEPATH=$(readlink -e "${CONFIG_FILE}")

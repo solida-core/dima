@@ -16,7 +16,7 @@ UNIT_TO_SAMPLE = {
     for unit in units}
 
 rule all:
-    input: expand("mapped_reads/merged_samples/{sample}.bam", A=config["samples"])
+    input: expand("mapped_reads/merged_samples/{sample}.bam", sample=config["samples"])
 
 include_prefix="rules"
 

@@ -23,8 +23,6 @@ rule samtools_merge_bam:
         "envs/samtools_merge_bam.yaml"
     benchmark:
         "benchmarks/samtools/merge/{sample}.txt"
-    run:
-        if len(input) > 1:
-            shell("samtools merge {output} {input}")
-        else:
-            shell("cp {input} {output} && touch -h {output}")
+    shell:
+        "samtools merge {output} {input}")
+        
