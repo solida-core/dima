@@ -1,7 +1,6 @@
 {
     "__default__" :
     {
-        "hosts_group" : "default_host_group",
-        "output_dir": "path_to_ge_logs"
+        "hosts_group" : "default_host_group"
     }
 }

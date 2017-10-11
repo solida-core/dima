@@ -76,7 +76,7 @@ then
           --jobname ${SHORTNAME}".{rulename}.{jobid}.sh" \
           --jobs 64 \
           --drmaa ' -S /bin/bash {cluster.hosts_group} -w n -b y -V ' \
-	  --drmaa-log-dir "logs/ge" \
+	  --drmaa-log-dir "logs/jobs" \
           ${SM_PARAMETERS}
 else
      snakemake --use-conda \
