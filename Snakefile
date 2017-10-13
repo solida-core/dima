@@ -1,6 +1,10 @@
 # vim: syntax=python tabstop=4 expandtab
 # coding: utf-8
 
+from snakemake.utils import min_version
+
+min_version("4.1.0")
+
 onstart:
     shell("mail -s 'Workflow started' email_address < {log}")
 
