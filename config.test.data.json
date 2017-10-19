@@ -8,9 +8,6 @@
    
     "platform": "ILLUMINA",
     "params_bwa_mem": "-M",
-   
-    "tmp_dir": "path_to_tmp_dir",
-   
     "samples": {
         "DNA16-0389-R0001": ["AHFFMGBBXX.L004.DNA16-0389-R0001", "AHFFMGBBXX.L005.DNA16-0389-R0001"],
         "DNA16-0284-R0001": ["AHFFMGBBXX.L004.DNA16-0284-R0001", "AHFFMGBBXX.L005.DNA16-0284-R0001"]
