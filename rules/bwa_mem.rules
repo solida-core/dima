@@ -4,7 +4,7 @@ rule bwa_mem:
     input: 
         lambda wildcards: config["units"][wildcards.unit]
     output: 
-        temp("mapped_reads/sam/{unit}.sam")
+        temp("mapped_reads/bam/{unit}_fixmate.bam")
     conda:
         "envs/bwa_mem.yaml"
     params:
@@ -16,8 +16,9 @@ rule bwa_mem:
         "mapped_reads/log/{unit}_bwa_mem.log"
     benchmark:
         "benchmarks/bwa/mem/{unit}.txt"
-    threads: bwa_cpu_count()
+    threads: conservative_cpu_count()
     shell:
         'bwa mem {params.custom} '
         r'-R "@RG\tID:{wildcards.unit}\tSM:{params.sample}\tPL:{config[platform]}\tLB:lib1\tPU:{params.platform_unit}" '
-        '-t {threads} {params.genome} {input} 2> {log} > {output}'
+        '-t {threads} {params.genome} {input} 2> {log} '
+        '|samtools fixmate -O bam - > {output}'

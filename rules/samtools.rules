@@ -3,9 +3,29 @@
 
 
 """
-Rules for modifying SAM or BAM files.
+samtools rules
 """
 
+rule samtools_sort_bam:
+   input:
+       "mapped_reads/bam/{unit}_fixmate.bam"
+   output:
+       temp("mapped_reads/bam/{unit}_sorted.bam")
+   conda:
+       "envs/samtools.yaml"
+   params:
+       tmp_dir=tmp_path(path=config.get("tmp_dir"))
+       output_fmt="BAM"
+   benchmark:
+       "benchmarks/samtools/sort/{unit}.txt"
+   threads: conservative_cpu_count()
+   shell:
+       "samtools sort "
+       "--threads {threads} "
+       "-T {params.tmp_dir} "
+       "-O {params.output_fmt} "
+       "-o {output} "
+       "{input} "
 
 
 rule samtools_merge_bam:
@@ -20,9 +40,12 @@ rule samtools_merge_bam:
     output:
         "mapped_reads/merged_samples/{sample}.bam"
     conda:
-        "envs/samtools_merge_bam.yaml"
+        "envs/samtools.yaml"
     benchmark:
         "benchmarks/samtools/merge/{sample}.txt"
+    params:
+        cmd='samtools'
+    threads: conservative_cpu_count()
     script:
         "scripts/samtools_merge_bam.py"
 
