@@ -6,11 +6,59 @@
 samtools rules
 """
 
+rule samtools_sort:
+   input:
+       "reads/aligned/{unit}_fixmate.cram"
+   output:
+       temp("reads/sorted/{unit}_sorted.cram")
+   conda:
+       "envs/samtools.yaml"
+   params:
+       tmp_dir=tmp_path(path=config.get("tmp_dir")),
+       genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+       output_fmt="CRAM"
+   benchmark:
+       "benchmarks/samtools/sort/{unit}.txt"
+   threads: conservative_cpu_count()
+   shell:
+       "samtools sort "
+       "--threads {threads} "
+       "-T {params.tmp_dir} "
+       "-O {params.output_fmt} "
+       "--reference {params.genome} "
+       "-o {output} "
+       "{input} "
+
+
+rule samtools_merge:
+    """
+    Merge bam files for multiple units into one for the given sample.
+    If the sample has only one unit, files will be copied.
+    """
+    input:
+        lambda wildcards: expand(
+            "reads/sorted/{unit}_sorted.cram",
+            unit=config["samples"][wildcards.sample])
+    output:
+        "reads/merged_samples/{sample}.cram"
+    conda:
+        "envs/samtools.yaml"
+    benchmark:
+        "benchmarks/samtools/merge/{sample}.txt"
+    params:
+        cmd='samtools',
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        output_fmt="CRAM"
+    threads: conservative_cpu_count()
+    script:
+        "scripts/samtools_merge.py"
+
+
 rule samtools_sort_bam:
    input:
-       "mapped_reads/bam/{unit}_fixmate.bam"
+       "reads/aligned/{unit}_fixmate.bam"
    output:
-       temp("mapped_reads/bam/{unit}_sorted.bam")
+       temp("reads/sorted/{unit}_sorted.bam")
    conda:
        "envs/samtools.yaml"
    params:
@@ -35,10 +83,10 @@ rule samtools_merge_bam:
     """
     input:
         lambda wildcards: expand(
-            "mapped_reads/bam/{unit}_sorted.bam",
+            "reads/sorted/{unit}_sorted.bam",
             unit=config["samples"][wildcards.sample])
     output:
-        "mapped_reads/merged_samples/{sample}.bam"
+        "reads/merged_samples/{sample}.bam"
     conda:
         "envs/samtools.yaml"
     benchmark:
@@ -48,5 +96,3 @@ rule samtools_merge_bam:
     threads: conservative_cpu_count()
     script:
         "scripts/samtools_merge_bam.py"
-
-        
