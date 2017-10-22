@@ -1,3 +1,4 @@
+import errno
 import multiprocessing
 import os.path
 import psutil
@@ -13,13 +14,23 @@ def cpu_count():
 
 
 def tmp_path(path=''):
+    """
+    if does not exists, create path and return it. If any errors, return
+    default path
+    :param path: path
+    :return: path
+    """
     default_path = os.getenv('TMPDIR', '/tmp')
-    if path and os.path.exists(path):
-        return path
-    return default_path
+    if path:
+        try:
+            os.makedirs(path)
+        except OSError as e:
+            if e.errno != errno.EEXIST:
+                return default_path
+    return path
 
 
-def bwa_cpu_count(reserve_cpu=2):
+def conservative_cpu_count(reserve_cpu=2):
     cpu_nums = cpu_count() if reserve_cpu > cpu_count() \
         else cpu_count() - reserve_cpu
     return cpu_nums

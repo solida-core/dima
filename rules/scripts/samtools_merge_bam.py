@@ -1,7 +1,7 @@
 from subprocess import run
 
 if len(snakemake.input) > 1:
-    cmd = ['samtools', 'merge', snakemake.output[0]]
+    cmd = [snakemake.params[['cmd']], 'merge', snakemake.output[0]]
     for i in snakemake.input:
         cmd.append(i)
     run(cmd)
