@@ -29,7 +29,5 @@ include:
 include:
     include_prefix + "/bwa_mem.rules"	
 include:
-    include_prefix + "/samfiles.rules"
-include:
-    include_prefix + "/picard.rules"
+    include_prefix + "/samtools.rules"
 
