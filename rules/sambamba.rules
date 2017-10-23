@@ -6,11 +6,11 @@
 sambamba rules
 """
 
-rule sambamba_sam2bam_sorted:
+rule sambamba_sort:
    input:
-       "mapped_reads/sam/{unit}.sam"
+       "reads/aligned/{unit}_fixmate.cram"
    output:
-       temp("mapped_reads/bam/{unit}_sorted.bam")
+       temp("reads/sorted/{unit}_sorted.bam")
    conda:
        "envs/sambamba.yaml"
    params:
@@ -19,7 +19,7 @@ rule sambamba_sam2bam_sorted:
        "benchmarks/sambamba/sam2bam_sorted/{unit}.txt"
    threads: conservative_cpu_count()
    shell:
-       "sambamba view -S -f bam -t {threads} {input} "
+       "sambamba view -C -S -f bam -t {threads} {input} "
        "| sambamba sort -t {threads} -m 15G --tmpdir {params.tmp_dir} "
        "-o {output} /dev/stdin"
 
@@ -31,10 +31,10 @@ rule sambamba_merge_bam:
     """
     input:
         lambda wildcards: expand(
-            "mapped_reads/bam/{unit}_sorted.bam",
+            "reads/aligned/{unit}_sorted.bam",
             unit=config["samples"][wildcards.sample])
     output:
-        "mapped_reads/merged_samples/{sample}.bam"
+        "reads/merged_samples/{sample}.bam"
     conda:
         "envs/sambamba.yaml"
     benchmark:
