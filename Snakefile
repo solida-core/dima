@@ -19,8 +19,13 @@ UNIT_TO_SAMPLE = {
     unit: sample for sample, units in config["samples"].items()
     for unit in units}
 
+# Output file format; possible values: cram, bam
+OUTPUT_FORMAT = 'cram'
+
 rule all:
-    input: expand("reads/merged_samples/{sample}.cram", sample=config["samples"])
+    input: expand("reads/merged_samples/{sample}.{output_format}", \
+                  sample=config["samples"], \
+                  output_format=OUTPUT_FORMAT)
 
 include_prefix="rules"
 

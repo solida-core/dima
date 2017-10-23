@@ -62,7 +62,7 @@ rule samtools_sort_bam:
    conda:
        "envs/samtools.yaml"
    params:
-       tmp_dir=tmp_path(path=config.get("tmp_dir"))
+       tmp_dir=tmp_path(path=config.get("tmp_dir")),
        output_fmt="BAM"
    benchmark:
        "benchmarks/samtools/sort/{unit}.txt"
@@ -83,7 +83,7 @@ rule samtools_merge_bam:
     """
     input:
         lambda wildcards: expand(
-            "reads/sorted/{unit}_sorted.bam",
+            "reads/sorted/{unit}_sorted.cram",
             unit=config["samples"][wildcards.sample])
     output:
         "reads/merged_samples/{sample}.bam"
@@ -92,7 +92,8 @@ rule samtools_merge_bam:
     benchmark:
         "benchmarks/samtools/merge/{sample}.txt"
     params:
-        cmd='samtools'
+        cmd='samtools',
+        output_fmt="BAM"
     threads: conservative_cpu_count()
     script:
-        "scripts/samtools_merge_bam.py"
+        "scripts/samtools_merge.py"
