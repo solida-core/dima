@@ -6,6 +6,37 @@
 samtools rules
 """
 
+rule samtools_index:
+   input:
+       "reads/merged_samples/{sample}.cram"
+   output:
+       "reads/merged_samples/{sample}.cram.crai"
+   conda:
+        "envs/samtools.yaml"
+   benchmark:
+        "benchmarks/samtools/index/{sample}.txt"
+   threads: conservative_cpu_count()
+   shell:
+       "samtools index "
+       "-@ {threads} "
+       "{input} "
+
+rule samtools_flagstat:
+   input:
+       "reads/merged_samples/{sample}.cram"
+   output:
+       "reads/merged_samples/{sample}.cram.flagstat"
+   conda:
+        "envs/samtools.yaml"
+   benchmark:
+        "benchmarks/samtools/flagstat/{sample}.txt"
+   threads: conservative_cpu_count()
+   shell:
+       "samtools flagstat "
+       "--threads {threads} "
+       "{input} > {output} "
+
+
 rule samtools_sort:
    input:
        "reads/aligned/{unit}_fixmate.cram"
