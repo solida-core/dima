@@ -63,7 +63,7 @@ rule samtools_sort:
 
 rule samtools_merge:
     """
-    Merge bam files for multiple units into one for the given sample.
+    Merge cram files for multiple units into one for the given sample.
     If the sample has only one unit, files will be copied.
     """
     input:

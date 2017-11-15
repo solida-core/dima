@@ -1,0 +1,30 @@
+from snakemake.exceptions import MissingInputException
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+HTTP = HTTPRemoteProvider()
+
+rule bwa_mem:
+    input: 
+        lambda wildcards: HTTP.remote(config["units"][wildcards.unit])
+    output: 
+        temp("reads/aligned/{unit}_fixmate.cram")
+    conda:
+        "envs/bwa_mem.yaml"
+    params:
+        sample=lambda wildcards: UNIT_TO_SAMPLE[wildcards.unit],
+        custom=config.get("params_bwa_mem", "-M"),
+        platform_unit=lambda wildcards: '.'.join(wildcards.unit.split('.')[:-1]),
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        output_fmt="CRAM"
+    log:
+        "reads/log/{unit}_bwa_mem.log"
+    benchmark:
+        "benchmarks/bwa/mem/{unit}.txt"
+    threads: conservative_cpu_count()
+    shell:
+        'bwa mem {params.custom} '
+        r'-R "@RG\tID:{wildcards.unit}\tSM:{params.sample}\tPL:{config[platform]}\tLB:lib1\tPU:{params.platform_unit}" '
+        '-t {threads} {params.genome} {input} 2> {log} '
+        '|samtools fixmate --threads {threads} '
+        '-O {params.output_fmt} '
+        '--reference {params.genome} '
+        '- {output} '
