@@ -12,5 +12,18 @@ if len(snakemake.input) > 1:
         cmd.append(i)
     run(cmd)
 else:
-     run(['cp', snakemake.input[0], snakemake.output[0]])
-     run(['touch', '-h', snakemake.output[0]])
+    if snakemake.params['output_fmt'] == 'CRAM':
+        _opt_ = '-C'
+    else:
+        _opt_ = '-b'
+    cmd = [snakemake.params['cmd'], 'view', _opt_,
+           '--threads', str(snakemake.threads),
+           '-O', snakemake.params['output_fmt']]
+    if snakemake.params['output_fmt'] == 'CRAM':
+        cmd.append('--reference')
+        cmd.append(snakemake.params['genome'][0])
+    cmd.append('-o')
+    cmd.append(snakemake.output[0])
+    cmd.append(snakemake.input[0])
+    run(cmd)
+    run(['touch', '-h', snakemake.output[0]])

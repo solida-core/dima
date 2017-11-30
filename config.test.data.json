@@ -10,17 +10,18 @@
     "params_bwa_mem": "-M",
     "tmp_dir": "path_to_tmp_dir",
     "samples": {
-        "father": ["C0C42ACXX.L004.father", "C0C42ACXX.L005.father"],
-        "mother": ["C0C42ACXX.L004.mother", "C0C42ACXX.L005.mother"],
-        "proband": ["C0C42ACXX.L002.proband", "C0C42ACXX.L003.proband"]
+        "DNA16-0389-R0001": ["AHFFMGBBXX.L004.DNA16-0389-R0001", "AHFFMGBBXX.L005.DNA16-0389-R0001"],
+        "DNA16-0284-R0001": ["AHFFMGBBXX.L004.DNA16-0284-R0001", "AHFFMGBBXX.L005.DNA16-0284-R0001"]
     },
     "units": {
-        "C0C42ACXX.L004.father": ["https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=father_L004_R1.fastq.gz", "https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=father_L004_R2.fastq.gz"],
-        "C0C42ACXX.L005.father": ["https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=father_L005_R1.fastq.gz", "https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=father_L005_R2.fastq.gz"],
-        "C0C42ACXX.L004.mother": ["https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=mother_L004_R1.fastq.gz", "https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=mother_L004_R2.fastq.gz"],
-        "C0C42ACXX.L005.mother": ["https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=mother_L005_R1.fastq.gz", "https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=mother_L005_R2.fastq.gz"],
-        "C0C42ACXX.L002.proband": ["https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=proband_L002_R1.fastq.gz", "https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=proband_L002_R2.fastq.gz"],
-        "C0C42ACXX.L003.proband": ["https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=proband_L003_R1.fastq.gz", "https://b2drop.eudat.eu/s/LPXAZYyWuPSjAvK/download?path=%2F&files=proband_L003_R2.fastq.gz"]
+        "AHFFMGBBXX.L004.DNA16-0389-R0001":
+           	["path_to_datasets/DNA16-0389-R0001_S44_L004_R1_001.fastq.gz", "path_to_datasets/DNA16-0389-R0001_S44_L004_R2_001.fastq.gz"],
+        "AHFFMGBBXX.L005.DNA16-0389-R0001":
+        	["path_to_datasets/DNA16-0389-R0001_S44_L005_R1_001.fastq.gz", "path_to_datasets/DNA16-0389-R0001_S44_L005_R2_001.fastq.gz"],
+        "AHFFMGBBXX.L004.DNA16-0284-R0001":
+        	["path_to_datasets/DNA16-0284-R0001_S48_L004_R1_001.fastq.gz", "path_to_datasets/DNA16-0284-R0001_S48_L004_R2_001.fastq.gz"],
+        "AHFFMGBBXX.L005.DNA16-0284-R0001":
+        	["path_to_datasets/DNA16-0284-R0001_S48_L005_R1_001.fastq.gz", "path_to_datasets/DNA16-0284-R0001_S48_L005_R2_001.fastq.gz"]
     }
 }
 
