@@ -5,16 +5,6 @@ from snakemake.utils import min_version
 
 min_version("4.1.0")
 
-onstart:
-    shell("mail -s 'Workflow started' email_address < {log}")
-
-onsuccess:
-    shell("mail -s 'Workflow finished, no error' email_address < {log}")
-
-onerror:
-    shell("mail -s 'an error occurred' email_address < {log}")
-
-
 UNIT_TO_SAMPLE = {
     unit: sample for sample, units in config["samples"].items()
     for unit in units}
