@@ -4,5 +4,4 @@ channels:
 - defaults
 dependencies:
 - snakemake==4.2.0
-- drmaa==git st
-0.7.6
+- drmaa==0.7.6
