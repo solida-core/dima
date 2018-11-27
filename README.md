@@ -31,7 +31,7 @@ nano Snakefile
 
 Create conda environment  
 ``` 
-conda env create -n dima --file environment.yml
+conda env create -n dima --file environment.yaml
 ```
 
 then activate it  
