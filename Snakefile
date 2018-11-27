@@ -1,37 +1,61 @@
-# vim: syntax=python tabstop=4 expandtab
-# coding: utf-8
+import pandas as pd
+from snakemake.utils import validate, min_version
+##### set minimum snakemake version #####
+min_version("5.1.2")
 
-from snakemake.utils import min_version
+##### load config and sample sheets #####
 
-min_version("4.1.0")
+configfile: "config.yaml"
 
-UNIT_TO_SAMPLE = {
-    unit: sample for sample, units in config["samples"].items()
-    for unit in units}
+samples = pd.read_table(config["samples"], index_col="sample")
+units = pd.read_table(config["units"], index_col=["unit"], dtype=str)
+#units.index = units.index.set_levels([i.astype(str) for i in units.index.levels]) # enforce str in index
 
-# Output file format; possible values: bam, cram
-OUTPUT_FORMAT = 'cram'
-# Output file format; possible values: bai, crai
-INDEX_FORMAT = 'crai'
+
+##### local rules #####
+
+localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
+
+
+##### target rules #####
 
 rule all:
-    input: expand("reads/merged_samples/{sample}.{output_format}", \
-                  sample=config["samples"], \
-                  output_format=OUTPUT_FORMAT),
-           expand("reads/merged_samples/{sample}.{output_format}.flagstat", \
-                  sample=config["samples"], \
-                  output_format=OUTPUT_FORMAT),
-           expand("reads/merged_samples/{sample}.{output_format}.{index_format}", \
-                  sample=config["samples"], \
-                  output_format=OUTPUT_FORMAT, \
-                  index_format=INDEX_FORMAT)
+    input:
+        expand("reads/merged/{sample.sample}.cram.crai",
+              sample=samples.reset_index().itertuples()),
+#        expand("reads/trimmed/{unit.unit}-R{read}-trimmed.fq.gz",
+#               unit=units.reset_index().itertuples(),
+#               read=[1, 2]),
+#        expand("reads/aligned/{unit.unit}_fixmate.cram",
+#               unit=units.reset_index().itertuples()),
+#        expand("reads/sorted/{unit.unit}_sorted.cram",
+#               unit=units.reset_index().itertuples()),
+#        expand("reads/merged/{sample.sample}.cram",
+#               sample=samples.reset_index().itertuples()),
+        expand("reads/dedup/{sample.sample}.dedup.bam",
+            sample=samples.reset_index().itertuples()),
+
+
+
+##### setup singularity #####
+
+# this container defines the underlying OS for each job when using the workflow
+# with --use-conda --use-singularity
+singularity: "docker://continuumio/miniconda3:4.4.10"
+
+
+##### load rules #####
 
 include_prefix="rules"
 
 include:
     include_prefix + "/functions.py"
 include:
-    include_prefix + "/bwa_mem.rules"	
+    include_prefix + "/trimming.smk"
 include:
-    include_prefix + "/samtools.rules"
+    include_prefix + "/alignment.smk"
+include:
+    include_prefix + "/samtools.smk"
+include:
+    include_prefix + "/picard.smk"
 

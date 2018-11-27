@@ -27,3 +27,4 @@ else:
     cmd.append(snakemake.input[0])
     run(cmd)
     run(['touch', '-h', snakemake.output[0]])
+
