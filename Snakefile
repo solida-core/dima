@@ -5,7 +5,7 @@ min_version("5.1.2")
 
 ##### load config and sample sheets #####
 
-configfile: "config.yaml"
+#configfile: "config.yaml"
 
 samples = pd.read_table(config["samples"], index_col="sample")
 units = pd.read_table(config["units"], index_col=["unit"], dtype=str)
@@ -32,7 +32,9 @@ rule all:
 #               unit=units.reset_index().itertuples()),
 #        expand("reads/merged/{sample.sample}.cram",
 #               sample=samples.reset_index().itertuples()),
-        expand("reads/dedup/{sample.sample}.dedup.bam",
+#        expand("reads/dedup/{sample.sample}.dedup.bam",
+#            sample=samples.reset_index().itertuples()),
+        expand("reads/recalibrated/{sample.sample}.dedup.recal.bam",
             sample=samples.reset_index().itertuples()),
 
 
@@ -58,4 +60,6 @@ include:
     include_prefix + "/samtools.smk"
 include:
     include_prefix + "/picard.smk"
+include:
+    include_prefix + "/bsqr.smk"
 

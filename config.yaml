@@ -12,6 +12,14 @@ references:
 
 genome_fasta: "_genome_fasta_"
 
+known_variants:
+    dbsnp: "known_variants/dbSNP146_chr.vcf"
+    hapmap: "known_variants/hapmap_3.3.hg19.sites.vcf"
+    g1k: "known_variants/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
+    omni: "known_variants/1000G_omni2.5.hg19.sites.vcf"
+    mills: "known_variants/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+    ph1_indels: "known_variants/1000G_phase1.indels.hg19.sites.vcf"
+
 
 paths:
   to_tmp: "path_to_tmp_dir"
@@ -29,3 +37,8 @@ rules:
     picard_WGSMetrics:
         arguments: "MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 READ_LENGTH=150 COUNT_UNPAIRED=true"
 
+    gatk_BQSR:
+        known_sites:
+            - dbsnp
+            - mills
+            - ph1_indel
