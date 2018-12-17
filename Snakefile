@@ -21,21 +21,8 @@ localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
 
 rule all:
     input:
-        expand("reads/merged/{sample.sample}.cram.crai",
-              sample=samples.reset_index().itertuples()),
-#        expand("reads/trimmed/{unit.unit}-R{read}-trimmed.fq.gz",
-#               unit=units.reset_index().itertuples(),
-#               read=[1, 2]),
-#        expand("reads/aligned/{unit.unit}_fixmate.cram",
-#               unit=units.reset_index().itertuples()),
-#        expand("reads/sorted/{unit.unit}_sorted.cram",
-#               unit=units.reset_index().itertuples()),
-#        expand("reads/merged/{sample.sample}.cram",
-#               sample=samples.reset_index().itertuples()),
-#        expand("reads/dedup/{sample.sample}.dedup.bam",
-#            sample=samples.reset_index().itertuples()),
         expand("reads/recalibrated/{sample.sample}.dedup.recal.bam",
-            sample=samples.reset_index().itertuples()),
+            sample=samples.reset_index().itertuples())
 
 
 
