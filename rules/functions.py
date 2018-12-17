@@ -21,17 +21,25 @@ def conservative_cpu_count(reserve_cores=1, max_cores=5):
     return max(cores - reserve_cores, 1)
 
 
-def references_abs_path():
-    references = config.get('references')
+def references_abs_path(ref='references'):
+    references = config.get(ref)
     basepath = references['basepath']
     provider = references['provider']
-    genome = references['genome_release']
+    release = references['release']
 
-    return [os.path.join(basepath, provider, genome)]
+    return [os.path.join(basepath, provider, release)]
 
 
 def resolve_single_filepath(basepath, filename):
     return [os.path.join(basepath, filename)]
+
+
+def get_references_label(ref='references'):
+    references = config.get(ref)
+    provider = references['provider']
+    genome = references['release']
+
+    return '_'.join([provider, genome])
 
 
 def resolve_multi_filepath(basepath, dictionary):
