@@ -99,8 +99,3 @@ rule gatk_BQSR_quality_control:
         "gatk AnalyzeCovariates --java-options {params.custom} "
         "-before {input.pre} -after {output.post} -plots {output.plot} "
         ">& {log.a}"
-
-rule check_files:
-        input: expand(dima_path+"reads/recalibrated/{sample}.dedup.recal.bam",sample=samples.reset_index().itertuples())
-        output: touch("check_files.done")
-        message: "Confirming that required files exist: {input}."
