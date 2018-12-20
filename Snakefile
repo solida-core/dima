@@ -13,7 +13,7 @@ units = pd.read_table(config["units"], index_col=["unit"], dtype=str)
 ##### local rules #####
 
 localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
-
+dima_path = ""
 
 ##### target rules #####
 
@@ -49,5 +49,5 @@ include:
     include_prefix + "/bsqr.smk"
 
 
-dima_path = ""
+
 
