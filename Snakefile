@@ -9,8 +9,6 @@ min_version("5.1.2")
 
 samples = pd.read_table(config["samples"], index_col="sample")
 units = pd.read_table(config["units"], index_col=["unit"], dtype=str)
-#units.index = units.index.set_levels([i.astype(str) for i in units.index.levels]) # enforce str in index
-
 
 ##### local rules #####
 
@@ -22,7 +20,8 @@ localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
 rule all:
     input:
         expand("reads/recalibrated/{sample.sample}.dedup.recal.bam",
-            sample=samples.reset_index().itertuples())
+            sample=samples.reset_index().itertuples()),
+        "check_files.done"
 
 
 
@@ -49,4 +48,7 @@ include:
     include_prefix + "/picard.smk"
 include:
     include_prefix + "/bsqr.smk"
+
+
+dima_path = ""
 

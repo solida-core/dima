@@ -1,10 +1,10 @@
 
 rule bwa_mem:
     input: 
-        "reads/trimmed/{unit}-R1-trimmed.fq.gz",
-        "reads/trimmed/{unit}-R2-trimmed.fq.gz"
+        dima_path+"reads/trimmed/{unit}-R1-trimmed.fq.gz",
+        dima_path+"reads/trimmed/{unit}-R2-trimmed.fq.gz"
     output: 
-        temp("reads/aligned/{unit}_fixmate.cram")
+        temp(dima_path+"reads/aligned/{unit}_fixmate.cram")
     conda:
         "../envs/bwa_mem.yaml"
     params:
@@ -15,9 +15,9 @@ rule bwa_mem:
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         output_fmt="CRAM"
     log:
-        "logs/bwa_mem/{unit}.log"
+        dima_path+"logs/bwa_mem/{unit}.log"
     benchmark:
-        "benchmarks/bwa/mem/{unit}.txt"
+        dima_path+"benchmarks/bwa/mem/{unit}.txt"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
         'bwa mem {params.custom} '
