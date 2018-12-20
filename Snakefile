@@ -20,8 +20,7 @@ localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
 rule all:
     input:
         expand("reads/recalibrated/{sample.sample}.dedup.recal.bam",
-            sample=samples.reset_index().itertuples()),
-        "check_files.done"
+            sample=samples.reset_index().itertuples())
 
 
 
