@@ -1,8 +1,8 @@
 rule samtools_sort:
    input:
-       dima_path+"reads/aligned/{unit}_fixmate.cram"
+       "reads/aligned/{unit}_fixmate.cram"
    output:
-       temp(dima_path+"reads/sorted/{unit}_sorted.cram")
+       temp("reads/sorted/{unit}_sorted.cram")
    conda:
        "../envs/samtools.yaml"
    params:
@@ -10,7 +10,7 @@ rule samtools_sort:
        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
        output_fmt="CRAM"
    benchmark:
-       dima_path+"benchmarks/samtools/sort/{unit}.txt"
+       "benchmarks/samtools/sort/{unit}.txt"
    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
    shell:
        "samtools sort "
@@ -30,14 +30,14 @@ rule samtools_merge:
     """
     input:
         lambda wildcards: get_units_by_sample(wildcards, samples,
-                                              prefix=dima_path+'reads/sorted/',
+                                              prefix='reads/sorted/',
                                               suffix='_sorted.cram')
     output:
-        dima_path+"reads/merged/{sample}.cram"
+        "reads/merged/{sample}.cram"
     conda:
         "../envs/samtools.yaml"
     benchmark:
-        dima_path+"benchmarks/samtools/merge/{sample}.txt"
+        "benchmarks/samtools/merge/{sample}.txt"
     params:
         cmd='samtools',
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
@@ -49,13 +49,13 @@ rule samtools_merge:
 
 rule samtools_index:
     input:
-        dima_path+"reads/merged/{sample}.cram"
+        "reads/merged/{sample}.cram"
     output:
-         dima_path+"reads/merged/{sample}.cram.crai"
+         "reads/merged/{sample}.cram.crai"
     conda:
         "../envs/samtools.yaml"
     benchmark:
-        dima_path+"benchmarks/samtools/index/{sample}.txt"
+        "benchmarks/samtools/index/{sample}.txt"
     shell:
         "samtools index "
         "{input} "
@@ -64,13 +64,13 @@ rule samtools_index:
 
 rule samtools_cram_to_bam:
     input:
-        dima_path+"reads/merged/{sample}.cram"
+        "reads/merged/{sample}.cram"
     output:
-        temp(dima_path+"reads/merged/{sample}.bam")
+        temp("reads/merged/{sample}.bam")
     conda:
         "../envs/samtools.yaml"
     benchmark:
-        dima_path+"benchmarks/samtools/cram_to_bam/{sample}.txt"
+        "benchmarks/samtools/cram_to_bam/{sample}.txt"
     params:
         genome=resolve_single_filepath(*references_abs_path(),
                                        config.get("genome_fasta")),
