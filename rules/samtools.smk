@@ -44,7 +44,7 @@ rule samtools_merge:
         output_fmt="CRAM"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     script:
-        "cripts/samtools_merge.py"
+        "scripts/samtools_merge.py"
 
 
 rule samtools_index:
