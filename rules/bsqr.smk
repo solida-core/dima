@@ -18,8 +18,7 @@ rule gatk_BQSR_data_processing:
     conda:
        "../envs/gatk.yaml"
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"),
-                           multiply_by=5),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         known_sites=get_known_sites(config.get("rules").get("gatk_BQSR").get("known_sites"))
     log:
@@ -48,8 +47,7 @@ rule gatk_ApplyBQSR:
     conda:
         "../envs/gatk.yaml"
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"),
-                           multiply_by=5),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
         "logs/gatk/ApplyBQSR/{sample}.post_recalibrate_info.log"
@@ -77,8 +75,7 @@ rule gatk_BQSR_quality_control:
     conda:
         "../envs/gatk.yaml"
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("to_tmp"),
-                           multiply_by=5),
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         known_sites=get_known_sites(config.get("rules").get("gatk_BQSR").get("known_sites"))
     log:

@@ -20,7 +20,7 @@ known_variants:
     mills: "known_variants/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
     ph1_indels: "known_variants/1000G_phase1.indels.hg19.sites.vcf"
 
-
+tmp_dir: "path_to_tmp_dir"
 paths:
   to_tmp: "path_to_tmp_dir"
 
