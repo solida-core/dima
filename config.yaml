@@ -42,3 +42,8 @@ rules:
             - dbsnp
             - mills
             - ph1_indel
+
+wrappers:
+    fastqc: "fastqc_wrapper"
+    trim_galore: "trim_galore_wrapper"
+    mark_duplicates: "mark_duplicates_wrapper"
