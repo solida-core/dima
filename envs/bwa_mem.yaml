@@ -3,3 +3,4 @@ channels:
 dependencies:
   - bwa=0.7.15
   - samtools=1.6
+  - openssl=1.0
