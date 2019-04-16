@@ -7,7 +7,8 @@ units for each sample or also only one unit per sample; in the last case, file w
 copied.  
 Output can be produced in BAM or CRAM (_default_) format.
 
-![Dima dag](images/dima_dag.png)
+## Workflow
+![Dima dag](images/dima.png)
 
 ## Requirements
 The pipeline's requirements are specified into the _environment.yml_ file and 
