@@ -30,7 +30,6 @@ rule trim_galore_pe:
     benchmark:
         "benchmarks/trim_galore/{unit}.txt"
     wrapper:
-#        "0.27.0/bio/trim_galore/pe"
         config.get("wrappers").get("trim_galore")
 
 rule post_rename_fastq_pe:

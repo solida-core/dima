@@ -15,5 +15,4 @@ rule mark_duplicates:
         config.get("rules").get("picard_MarkDuplicates").get("arguments"),
         lambda wildcards: get_odp(wildcards, samples, 'odp')
     wrapper:
-#        "0.27.0/bio/picard/markduplicates"
         config.get("wrappers").get("mark_duplicates")
