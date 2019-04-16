@@ -11,7 +11,7 @@ Output can be produced in BAM or CRAM (_default_) format.
 ![Dima dag](images/dima.png)
 
 ## Requirements
-The pipeline's requirements are specified into the _environment.yml_ file and 
+The pipeline's requirements are specified into the _environment.yaml_ file and 
 packages dependency are resolved using [Conda](https://conda.io/miniconda.html). 
 
 ## Usage
@@ -20,13 +20,13 @@ packages dependency are resolved using [Conda](https://conda.io/miniconda.html).
 
 Clone the repository and cd in it
 ```bash
-git clone https://bitbucket.org/biopipelines/dima
+git clone https://github.com/solida-core/dima.git
 cd dima
 ```
 
 Edit the configuration file and the Snakefile to match your environment  
 ```
-nano config.test.data.json   
+nano config.yaml   
 nano Snakefile
 ```
 
@@ -42,7 +42,7 @@ source activate dima
 
 Launch Snakemake  
 ```
-snakemake --use-conda --configfile config.test.data.json
+snakemake --use-conda --configfile config.yaml
 ```
 
 ### Automatic deployment (a.k.a. easy way)
