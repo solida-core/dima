@@ -1,0 +1,1 @@
+The pipeline can be run [manually](diva_snakemake.md) or with SOLIDA

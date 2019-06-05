@@ -1,65 +1,50 @@
-# DiMA 
-Snakemake pipeline to map DNA datasets to a given reference genome using [BWA 
-MEM](https://github.com/lh3/bwa/) and [Samtools](http://www.htslib.org/).  
-Input datsets are fastq files  gzipped. Can be organized in 
-multiple 
-units for each sample or also only one unit per sample; in the last case, file will be 
-copied.  
-Output can be produced in BAM or CRAM (_default_) format.
+[![depends](https://img.shields.io/badge/depends%20from-bioconda-brightgreen.svg)](http://bioconda.github.io/)
+[![snakemake](https://img.shields.io/badge/snakemake-5.3-brightgreen.svg)](https://snakemake.readthedocs.io/en/stable/)
 
-## Workflow
-![Dima dag](images/dima.png)
+# DiMA
+**DiMA** (DNA Mapping) is a pipeline for Next-Generation Sequencing data alignment.
 
-## Requirements
-The pipeline's requirements are specified into the _environment.yaml_ file and 
-packages dependency are resolved using [Conda](https://conda.io/miniconda.html). 
+All **[solida-core](https://github.com/solida-core)** workflows follow GATK Best Practices for Germline Variant Discovery, with the incorporation of further improvements and refinements after their testing with real data in various [CRS4 Next Generation Sequencing Core Facility](http://next.crs4.it) research sequencing projects.
 
-## Usage
+Pipelines are based on [Snakemake](https://snakemake.readthedocs.io/en/stable/), a workflow management system that provides all the features needed to create reproducible and scalable data analyses.
 
-### Manual deployment (a.k.a. hard way)
-
-Clone the repository and cd in it
-```bash
-git clone https://github.com/solida-core/dima.git
-cd dima
-```
-
-Edit the configuration file and the Snakefile to match your environment  
-```
-nano config.yaml   
-nano Snakefile
-```
-
-Create conda environment  
-``` 
-conda env create -n dima --file environment.yaml
-```
-
-then activate it  
-```
-source activate dima
-```
-
-Launch Snakemake  
-```
-snakemake --use-conda --configfile config.yaml
-```
-
-### Automatic deployment (a.k.a. easy way)
-
-Use [Solida](https://bitbucket.org/biopipelines/solida).
-
-### Output
-
-Default output of the pipeline in CRAM format, but can changed easily in BAM 
-editing the Snakefile (look for OUTPUT_FORMAT variable) 
+Software dependencies are specified into the `environment.yaml` file and directly managed by Snakemake using [Conda](https://docs.conda.io/en/latest/miniconda.html), ensuring the reproducibility of the workflow on a great number of different computing environments such as workstations, clusters and cloud environments.
 
 
-## Contributing
+### Pipeline Overview
+The pipeline workflow is aimed at [_Mapping_](docs/dima_workflow.md#mapping) paired-end reads in fastq format against a reference genome to produce a deduplicated and recalibrated BAM file.
 
-Contributions from everyone and anyone are welcome.  
-Fork this repository, make your changes and create a Pull Request. 
-Then one of the maintainers will review your changes.  
-When all comments have been addressed and all tests pass, your changes will 
-be merged.
+Obtained BAM files can be then included in Variant Calling processes or visualized with tools like [IGV]().
+DiMA pipeline is included in other solida-core pipelines that requires the mapping step (i.e. [DiVA]()). 
+The standalone usage is recommended for analysis which requires BAM files and not a Variant Calling step.
 
+A complete view of the analysis workflow is provided by the pipeline's [graph](images/dima.png).
+
+
+
+### Pipeline Handbook
+**DiMA** pipeline documentation can be found in the `docs/` directory:
+
+
+1. [Pipeline Structure:](https://github.com/solida-core/docs/blob/master/pipeline_structure.md)
+    * [Snakefile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#snakefile)
+    * [Configfile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#configfile)
+    * [Rules](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#rules)
+    * [Envs](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#envs)
+2. [Pipeline Workflow](docs/dima_workflow.md)
+3. [Required Files:]()
+    * [Reference files](docs/reference_files.md)
+    * [User files](docs/user_files.md)
+4. [Running the pipeline:]()
+    * [Manual Snakemake Usage](docs/dima_snakemake.md)
+    * [SOLIDA:]()
+        * [CLI - Command Line Interface](https://github.com/solida-core/solida/blob/master/README.md)
+        * [GUI - Graphical User Interface]()
+
+
+
+
+
+
+### Contact us
+[support@solida-core](mailto:m.massidda@crs4.it) 
