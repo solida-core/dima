@@ -9,7 +9,8 @@ min_version("5.1.2")
 
 samples = pd.read_table(config["samples"], index_col="sample")
 units = pd.read_table(config["units"], index_col=["unit"], dtype=str)
-
+units_se=units[units["fq2"].isna()]
+units_pe=units[units["fq2"].notna()]
 ##### local rules #####
 
 localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
