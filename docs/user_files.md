@@ -58,14 +58,14 @@ The file structure is described in the example below::
 sample  	unit	                        fq1	                                fq2
 ERS179576	HSQ1008_141.L005.ERS179576	path_to_datasets/ERR174310_1.fastq.gz	path_to_datasets/ERR174310_2.fastq.gz
 ERS179576	HSQ1008_141.L007.ERS179576	path_to_datasets/ERR174312_1.fastq.gz	path_to_datasets/ERR174312_2.fastq.gz
-ERS179576	HSQ1009_88.L001.ERS179576	path_to_datasets/ERR174314_1.fastq.gz	path_to_datasets/ERR174314_2.fastq.gz
-ERS179577	HSQ1009_86.L001.ERS179577	path_to_datasets/ERR174324_1.fastq.gz	path_to_datasets/ERR174324_2.fastq.gz
+ERS179576	HSQ1009_88.L001.ERS179576	path_to_datasets/ERR174314_1.fastq.gz
+ERS179577	HSQ1009_86.L001.ERS179577	path_to_datasets/ERR174324_1.fastq.gz
 ``` 
 Where:
 
 * sample: sample IDs, in this file a sample ID can be present in multiple lines according with the number of units;
 * unit: one unique unit ID
-* fq1-fq2: complete path and R1- and R2-fastq files (for paired-end sequencing).
+* fq1-fq2: complete path and R1- and R2-fastq files (for paired-end sequencing). If fq2 field is null, the unit is considered single-end.
 
 
 ______________________________________
