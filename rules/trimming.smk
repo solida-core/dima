@@ -59,8 +59,8 @@ rule trim_galore_se:
         rules.pre_rename_fastq_se.output
 #        "reads/untrimmed/{unit}-R1.fq.gz"
     output:
-        temp("reads/trimmed/{unit}_trimmed.fq.gz"),
-        "reads/trimmed/{unit}.fq.gz_trimming_report.txt"
+        temp("reads/trimmed/{unit}-R1_trimmed.fq.gz"),
+        "reads/trimmed/{unit}-R1.fq.gz_trimming_report.txt"
     params:
         extra=config.get("rules").get("trim_galore_se").get("arguments")
     log:
@@ -91,7 +91,7 @@ rule post_rename_fastq_se:
     output:
         r1="reads/se/trimmed/{unit}-R1-trimmed.fq.gz"
     shell:
-        "mv {input} {output.r1}"
+        "mv {input[0]} {output.r1}"
 
 
 
