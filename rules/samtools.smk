@@ -6,7 +6,7 @@ rule samtools_sort:
    conda:
        "../envs/samtools.yaml"
    params:
-       tmp_dir=tmp_path(path=config.get("paths").get("to_tmp")),
+       tmp_dir=tmp_path(path=config.get("tmp_dir")),
        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
        output_fmt="CRAM"
    benchmark:
