@@ -1,6 +1,3 @@
-# def get_fastq(wildcards,units,read_pair='fq1'):
-#     return units.loc[wildcards.unit,
-#                      [read_pair]].dropna()[0]
 
 def get_fastq(wildcards,units):
     # print(wildcards.unit)
@@ -17,8 +14,6 @@ def get_fastq(wildcards,units):
 rule pre_rename_fastq_pe:
     input:
         lambda wildcards: get_fastq(wildcards,units)
-        # r1=lambda wildcards: get_fastq(wildcards, units, 'fq1'),
-        # r2=lambda wildcards: get_fastq(wildcards, units, 'fq2')
     output:
         r1="reads/untrimmed/{unit}-R1.fq.gz",
         r2="reads/untrimmed/{unit}-R2.fq.gz"
@@ -29,7 +24,6 @@ rule pre_rename_fastq_pe:
 rule pre_rename_fastq_se:
     input:
        lambda wildcards: get_fastq(wildcards,units)
-#         r1=lambda wildcards: get_fastq(wildcards, units, 'fq1')
     output:
         r1="reads/untrimmed/se/{unit}-R1.fq.gz"
     shell:
@@ -39,44 +33,58 @@ rule pre_rename_fastq_se:
 rule trim_galore_pe:
     input:
         rules.pre_rename_fastq_pe.output
-#        ["reads/untrimmed/{unit}-R1.fq.gz", "reads/untrimmed/{unit}-R2.fq.gz"]
     output:
         temp("reads/trimmed/{unit}-R1_val_1.fq.gz"),
         "reads/trimmed/{unit}-R1.fq.gz_trimming_report.txt",
         temp("reads/trimmed/{unit}-R2_val_2.fq.gz"),
         "reads/trimmed/{unit}-R2.fq.gz_trimming_report.txt"
     params:
-        extra=config.get("rules").get("trim_galore_pe").get("arguments")
+        extra=config.get("rules").get("trim_galore_pe").get("arguments"),
+        outdir="reads/trimmed/"
     log:
         "logs/trim_galore/{unit}.log"
     benchmark:
         "benchmarks/trim_galore/{unit}.txt"
-    wrapper:
-        config.get("wrappers").get("trim_galore_pe")
+    conda:
+        "../envs/trim_galore.yaml"
+    shell:
+        "mkdir -p qc/fastqc; "
+        "trim_galore "
+        "{params.extra} "
+        "-o {params.outdir} "
+        "{input} "
+        ">& {log}"
+
 
 rule trim_galore_se:
     input:
         rules.pre_rename_fastq_se.output
-#        "reads/untrimmed/{unit}-R1.fq.gz"
     output:
         temp("reads/trimmed/se/{unit}-R1_trimmed.fq.gz"),
         "reads/trimmed/se/{unit}-R1.fq.gz_trimming_report.txt"
     params:
-        extra=config.get("rules").get("trim_galore_se").get("arguments")
+        extra=config.get("rules").get("trim_galore_se").get("arguments"),
+        outdir="reads/trimmed/se/"
     log:
         "logs/trim_galore/{unit}.log"
     benchmark:
         "benchmarks/trim_galore/{unit}.txt"
-    wrapper:
-        config.get("wrappers").get("trim_galore_se")
+    conda:
+        "../envs/trim_galore.yaml"
+    shell:
+        "mkdir -p qc/fastqc; "
+        "trim_galore "
+        "{params.extra} "
+        "-o {params.outdir} "
+        "{input} "
+        ">& {log}"
+
 
 
 
 rule post_rename_fastq_pe:
     input:
         rules.trim_galore_pe.output
-        # r1="reads/trimmed/{unit}-R1_val_1.fq.gz",
-        # r2="reads/trimmed/{unit}-R2_val_2.fq.gz"
     output:
         r1="reads/trimmed/{unit}-R1-trimmed.fq.gz",
         r2="reads/trimmed/{unit}-R2-trimmed.fq.gz"
@@ -87,11 +95,11 @@ rule post_rename_fastq_pe:
 rule post_rename_fastq_se:
     input:
         rules.trim_galore_se.output
-#        r1="reads/trimmed/{unit}_trimmed.fq.gz"
     output:
         r1="reads/se/trimmed/{unit}-R1-trimmed.fq.gz"
     shell:
         "mv {input[0]} {output.r1}"
+
 
 
 

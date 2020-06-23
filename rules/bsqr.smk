@@ -43,7 +43,7 @@ rule gatk_ApplyBQSR:
         bqsr="reads/recalibrated/{sample}.recalibrate.grp"
     output:
         bam=protected("reads/recalibrated/{sample}.dedup.recal.bam"),
-
+        bai="reads/recalibrated/{sample}.dedup.recal.bai"
     conda:
         "../envs/gatk.yaml"
     params:

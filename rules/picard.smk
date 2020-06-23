@@ -8,11 +8,18 @@ rule mark_duplicates:
         metrics="reads/dedup/{sample}.metrics.txt"
     log:
         "logs/picard/MarkDuplicates/{sample}.log"
+    conda:
+        "../envs/picard.yaml"
     benchmark:
         "benchmarks/picard/MarkDuplicates/{sample}.txt"
     params:
         java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         config.get("rules").get("picard_MarkDuplicates").get("arguments"),
         lambda wildcards: get_odp(wildcards, samples, 'odp')
-    wrapper:
-        config.get("wrappers").get("mark_duplicates")
+    shell:
+        "picard MarkDuplicates "
+        "{params} "
+        "INPUT={input} "
+        "OUTPUT={output.bam} "
+        "METRICS_FILE={output.metrics} "
+        ">& {log}"

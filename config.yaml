@@ -21,8 +21,6 @@ known_variants:
     ph1_indels: "known_variants/1000G_phase1.indels.hg19.sites.vcf"
 
 tmp_dir: "path_to_tmp_dir"
-paths:
-  to_tmp: "path_to_tmp_dir"
 
 rules:
     bwa-mem:
@@ -44,9 +42,3 @@ rules:
             - dbsnp
             - mills
             - ph1_indel
-
-wrappers:
-    fastqc: "fastqc_wrapper"
-    trim_galore_se: "trim_galore_se_wrapper"
-    trim_galore_pe: "trim_galore_pe_wrapper"
-    mark_duplicates: "mark_duplicates_wrapper"
