@@ -47,10 +47,12 @@ rule trim_galore_pe:
         "benchmarks/trim_galore/{unit}.txt"
     conda:
         "../envs/trim_galore.yaml"
+    threads: (conservative_cpu_count(reserve_cores=2, max_cores=99))/4
     shell:
         "mkdir -p qc/fastqc; "
         "trim_galore "
         "{params.extra} "
+        "--cores {threads} "
         "-o {params.outdir} "
         "{input} "
         ">& {log}"
@@ -71,10 +73,12 @@ rule trim_galore_se:
         "benchmarks/trim_galore/{unit}.txt"
     conda:
         "../envs/trim_galore.yaml"
+    threads: (conservative_cpu_count(reserve_cores=2, max_cores=99))/2
     shell:
         "mkdir -p qc/fastqc; "
         "trim_galore "
         "{params.extra} "
+        "--cores {threads} "
         "-o {params.outdir} "
         "{input} "
         ">& {log}"
