@@ -29,9 +29,9 @@ rules:
     multiqc:
         arguments: ""
     trim_galore_pe:
-        arguments: "-q 20"
+        arguments: "--paired -q 20 "
     trim_galore_se:
-        arguments: "-q 20"
+        arguments: "-q 20 "
     picard_MarkDuplicates:
         arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
     picard_WGSMetrics:
