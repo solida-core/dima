@@ -12,7 +12,7 @@ def get_known_sites(known_sites=['dbsnp','mills','ph1_indel']):
 
 rule gatk_BQSR_data_processing:
     input:
-        cram="reads/dedup/{sample}.dedup.cram"
+        bam="reads/dedup/{sample}.dedup.bam"
     output:
         "reads/recalibrated/{sample}.recalibrate.grp"
     conda:
@@ -32,18 +32,18 @@ rule gatk_BQSR_data_processing:
         "{params.known_sites} "
 #        "--spark-runner LOCAL "
 #        "--spark-master local[{threads}]  "
-        "-I {input.cram} "
+        "-I {input.bam} "
         "-O {output} "
         ">& {log}"
 
 
 rule gatk_ApplyBQSR:
     input:
-        cram="reads/dedup/{sample}.dedup.cram",
+        bam="reads/dedup/{sample}.dedup.bam",
         bqsr="reads/recalibrated/{sample}.recalibrate.grp"
     output:
-        cram=protected("reads/recalibrated/{sample}.dedup.recal.cram"),
-        crai="reads/recalibrated/{sample}.dedup.recal.crai"
+        bam=temp("reads/recalibrated/{sample}.dedup.recal.bam"),
+        bai="reads/recalibrated/{sample}.dedup.recal.bai"
     conda:
         "../envs/gatk.yaml"
     params:
@@ -59,15 +59,15 @@ rule gatk_ApplyBQSR:
         "-R {params.genome} "
 #        "--spark-runner LOCAL "
 #        "--spark-master local[{threads}]  "
-        "-I {input.cram} "
+        "-I {input.bam} "
         "--bqsr-recal-file {input.bqsr} "
-        "-O {output.cram} "
+        "-O {output.bam} "
         ">& {log}"
 
 
 rule gatk_BQSR_quality_control:
     input:
-        cram="reads/recalibrated/{sample}.dedup.recal.cram",
+        bam="reads/recalibrated/{sample}.dedup.recal.bam",
         pre="reads/recalibrated/{sample}.recalibrate.grp"
     output:
         post="reads/recalibrated/{sample}.post.recalibrate.grp",
@@ -90,7 +90,7 @@ rule gatk_BQSR_quality_control:
         "{params.known_sites} "
 #        "--spark-runner LOCAL "
 #        "--spark-master local[{threads}]  "
-        "-I {input.cram} "
+        "-I {input.bam} "
         "-O {output.post} "
         ">& {log.b}; "
         "gatk AnalyzeCovariates --java-options {params.custom} "
