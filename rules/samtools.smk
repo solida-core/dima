@@ -83,3 +83,40 @@ rule samtools_cram_to_bam:
         "-o {output} "
         "-O {params.output_fmt} "
         "{input} "
+
+
+rule samtools_bam_cram:
+    input:
+        "reads/dedup/{sample}.dedup.bam"
+    output:
+        temp("reads/dedup/{sample}.dedup.cram")
+    conda:
+        "../envs/samtools.yaml"
+    benchmark:
+        "benchmarks/samtools/bam_to_cram/{sample}.txt"
+    params:
+        genome=resolve_single_filepath(*references_abs_path(),
+                                       config.get("genome_fasta")),
+        output_fmt="CRAM"
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    shell:
+        "samtools view -C "
+        "--threads {threads} "
+        "-T {params.genome} "
+        "-o {output} "
+        "-O {params.output_fmt} "
+        "{input} "
+
+
+rule samtools_index_2:
+    input:
+        "reads/dedup/{sample}.dedup.cram"
+    output:
+         "reads/dedup/{sample}.dedup.cram.crai"
+    conda:
+        "../envs/samtools.yaml"
+    benchmark:
+        "benchmarks/samtools/index_2/{sample}.txt"
+    shell:
+        "samtools index "
+        "{input} "
