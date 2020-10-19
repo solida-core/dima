@@ -33,7 +33,7 @@ rule samtools_merge:
                                               prefix='reads/sorted/',
                                               suffix='_sorted.cram')
     output:
-        "reads/merged/{sample}.cram"
+        temp("reads/merged/{sample}.cram")
     conda:
         "../envs/samtools.yaml"
     benchmark:
@@ -45,21 +45,6 @@ rule samtools_merge:
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     script:
         "scripts/samtools_merge.py"
-
-
-rule samtools_index:
-    input:
-        "reads/merged/{sample}.cram"
-    output:
-         "reads/merged/{sample}.cram.crai"
-    conda:
-        "../envs/samtools.yaml"
-    benchmark:
-        "benchmarks/samtools/index/{sample}.txt"
-    shell:
-        "samtools index "
-        "{input} "
-
 
 
 rule samtools_cram_to_bam:
@@ -85,7 +70,7 @@ rule samtools_cram_to_bam:
         "{input} "
 
 
-rule samtools_bam_cram:
+rule samtools_bam_to_cram:
     input:
         "reads/recalibrated/{sample}.dedup.recal.bam"
     output:
@@ -108,7 +93,7 @@ rule samtools_bam_cram:
         "{input} "
 
 
-rule samtools_index_2:
+rule samtools_index:
     input:
         "reads/recalibrated/{sample}.dedup.recal.cram"
     output:

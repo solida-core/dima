@@ -90,20 +90,20 @@ rule post_rename_fastq_pe:
     input:
         rules.trim_galore_pe.output
     output:
-        r1="reads/trimmed/{unit}-R1-trimmed.fq.gz",
-        r2="reads/trimmed/{unit}-R2-trimmed.fq.gz"
+        r1=temp("reads/trimmed/{unit}-R1-trimmed.fq.gz"),
+        r2=temp("reads/trimmed/{unit}-R2-trimmed.fq.gz")
     shell:
         "mv {input[0]} {output.r1} &&"
         "mv {input[2]} {output.r2} "
+
 
 rule post_rename_fastq_se:
     input:
         rules.trim_galore_se.output
     output:
-        r1="reads/se/trimmed/{unit}-R1-trimmed.fq.gz"
+        r1=temp("reads/se/trimmed/{unit}-R1-trimmed.fq.gz")
     shell:
         "mv {input[0]} {output.r1}"
-
 
 
 
