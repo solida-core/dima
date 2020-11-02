@@ -1,0 +1,5 @@
+sample	unit	fq1	fq2
+NA20804	HSQ1008_141.L005.NA20804	../test_data/fastq/NA20804.L005.R1.fastq.gz	../test_data/fastq/NA20804.L005.R2.fastq.gz
+NA20804	HSQ1008_141.L007.NA20804	../test_data/fastq/NA20804.L007.R1.fastq.gz	../test_data/fastq/NA20804.L007.R2.fastq.gz
+NA20804	HSQ1009_88.L001.NA20804	../test_data/fastq/NA20804.L001.R1.fastq.gz
+NA20805	HSQ1009_86.L001.NA20805	../test_data/fastq/NA20805.L001.R1.fastq.gz

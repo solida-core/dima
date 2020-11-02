@@ -1,0 +1,44 @@
+# This file should contain everything to configure the workflow on a global scale.
+# In case of sample based data, it should be complemented by a samples.tsv file that contains
+# one row per sample. It can be parsed easily via pandas.
+
+samples: ../test_data/samples.test.tsv
+units: ../test_data/units.test.tsv
+
+references:
+    basepath: "../test_data/references"
+    provider: "ucsc"
+    release: "hg19"
+
+genome_fasta: "ucsc.hg19.fasta"
+
+known_variants:
+    dbsnp: "known_variants/dbSNP146_chr.vcf"
+    hapmap: "known_variants/hapmap_3.3.hg19.sites.vcf"
+    g1k: "known_variants/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
+    omni: "known_variants/1000G_omni2.5.hg19.sites.vcf"
+    mills: "known_variants/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+    ph1_indels: "known_variants/1000G_phase1.indels.hg19.sites.vcf"
+
+tmp_dir: "path_to_tmp_dir"
+
+rules:
+    bwa-mem:
+        arguments: "-M"
+        platform: "illumina"
+    multiqc:
+        arguments: ""
+    trim_galore_pe:
+        arguments: "--paired -q 20 "
+    trim_galore_se:
+        arguments: "-q 20 "
+    picard_MarkDuplicates:
+        arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
+    picard_WGSMetrics:
+        arguments: "MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 READ_LENGTH=150 COUNT_UNPAIRED=true"
+
+    gatk_BQSR:
+        known_sites:
+            - dbsnp
+            - mills
+            - ph1_indel
