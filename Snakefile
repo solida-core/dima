@@ -19,7 +19,7 @@ dima_path = ""
 
 rule all:
     input:
-        expand("reads/recalibrated/{sample.sample}.dedup.recal.cram
+        expand("reads/recalibrated/{sample.sample}.dedup.recal.cram",
             sample=samples.reset_index().itertuples())
 
 
