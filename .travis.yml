@@ -11,11 +11,14 @@ install:
 - export PATH="$HOME/miniconda/bin:$PATH"
 - hash -r
 - conda config --set always_yes yes --set changeps1 no
+- conda config --add channels bioconda
+- conda config --add channels conda-forge
 - conda update -q conda
 - conda info -a
-- conda create -q -n test-environment -f environment.yml python=$TRAVIS_PYTHON_VERSION
+- conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
+- conda env update -q -n test-env --file environment.yaml
 - source activate test-environment
+- conda install
 
 script:
   - snakemake --snakefile Snakefile --configfile test_data/config.test.yaml --use-conda --dryrun -d folder_test
-  - snakemake --snakefile Snakefile --configfile test_data/config.test.yaml --use-conda -d folder_test
