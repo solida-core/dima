@@ -1,0 +1,21 @@
+language: python
+python:
+- 3.5
+- 3.6
+- 3.8
+
+install:
+- sudo apt-get update
+- wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+- bash miniconda.sh -b -p $HOME/miniconda
+- export PATH="$HOME/miniconda/bin:$PATH"
+- hash -r
+- conda config --set always_yes yes --set changeps1 no
+- conda update -q conda
+- conda info -a
+- conda create -q -n test-environment -f environment.yml python=$TRAVIS_PYTHON_VERSION
+- source activate test-environment
+
+script:
+  - snakemake --snakefile Snakefile --configfile test_data/config.test.yaml --use-conda --dryrun -d folder_test
+  - snakemake --snakefile Snakefile --configfile test_data/config.test.yaml --use-conda -d folder_test
