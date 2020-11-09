@@ -47,7 +47,7 @@ rule trim_galore_pe:
         "benchmarks/trim_galore/{unit}.txt"
     conda:
         "../envs/trim_galore.yaml"
-    threads: (conservative_cpu_count(reserve_cores=2, max_cores=99))/4
+    threads: (conservative_cpu_count(reserve_cores=2, max_cores=99))/4 if (conservative_cpu_count(reserve_cores=2, max_cores=99)) >4 else 1
     shell:
         "mkdir -p qc/fastqc; "
         "trim_galore "
@@ -73,7 +73,7 @@ rule trim_galore_se:
         "benchmarks/trim_galore/{unit}.txt"
     conda:
         "../envs/trim_galore.yaml"
-    threads: (conservative_cpu_count(reserve_cores=2, max_cores=99))/2
+    threads: (conservative_cpu_count(reserve_cores=2, max_cores=99))/2 if (conservative_cpu_count(reserve_cores=2, max_cores=99)) >2 else 1
     shell:
         "mkdir -p qc/fastqc; "
         "trim_galore "
