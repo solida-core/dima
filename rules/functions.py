@@ -95,7 +95,12 @@ def java_params(tmp_dir='', percentage_to_preserve=20, stock_mem=1024 ** 3,
         return "%sB" % n
 
     def preserve(resource, percentage, stock):
-        return resource - max(resource * percentage // 100, stock)
+        preserved = resource - max(resource * percentage // 100, stock)
+
+        return preserved if preserved != 0 else stock
+
+    # def preserve(resource, percentage, stock):
+    #     return resource - max(resource * percentage // 100, stock)
 
     params_template = "'-Xms{} -Xmx{} -XX:ParallelGCThreads={} " \
                       "-Djava.io.tmpdir={}'"
