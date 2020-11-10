@@ -1,6 +1,5 @@
 language: python
 python:
-- 3.6
 - 3.8
 
 install:
@@ -14,9 +13,9 @@ install:
 - conda config --add channels conda-forge
 - conda update -q conda
 - conda info -a
-- conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
-- conda env update -q -n test-environment --file environment.yaml
-- source activate test-environment
+- conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION
+- conda env update -q -n test-env --file environment.yaml
+- source activate test-env
 
 script:
-  - snakemake --snakefile Snakefile --configfile test_data/config.test.yaml --use-conda --dryrun -d folder_test
+  - snakemake --snakefile Snakefile --configfile test/files/config.test.yaml --use-conda --dryrun --quiet -d test/workdir
