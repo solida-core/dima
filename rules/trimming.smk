@@ -4,11 +4,11 @@ def get_fastq(wildcards,units):
     if units.loc[wildcards.unit,["fq2"]].isna().all():
         print("SE")
         # print(units.loc[wildcards.unit,["fq1"]].dropna()[0])
-        return units.loc[wildcards.unit,["fq1"]].dropna()[0]
+        return expand_filepath(units.loc[wildcards.unit,["fq1"]].dropna()[0])
     else:
         print("PE")
         # print(units.loc[wildcards.unit,["fq1"]].dropna()[0],units.loc[wildcards.unit,["fq2"]].dropna()[0])
-        return units.loc[wildcards.unit,["fq1"]].dropna()[0],units.loc[wildcards.unit,["fq2"]].dropna()[0]
+        return expand_filepath(units.loc[wildcards.unit,["fq1"]].dropna()[0]),expand_filepath(units.loc[wildcards.unit,["fq2"]].dropna()[0])
 
 
 rule pre_rename_fastq_pe:

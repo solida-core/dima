@@ -4,9 +4,7 @@ import os.path
 import psutil
 
 
-
 ##### Helper functions #####
-
 def total_physical_mem_size():
     mem = psutil.virtual_memory()
     return mem.total
@@ -28,6 +26,14 @@ def references_abs_path(ref='references'):
     release = references['release']
 
     return [os.path.join(basepath, provider, release)]
+
+
+def expand_filepath(filepath):
+    filepath = os.path.expandvars(os.path.expanduser(filepath))
+    if not os.path.isabs(filepath):
+        raise FileNotFoundError(
+            errno.ENOENT, os.strerror(errno.ENOENT)+" (path must be absolute)", filepath)
+    return filepath
 
 
 def resolve_single_filepath(basepath, filename):
@@ -96,7 +102,6 @@ def java_params(tmp_dir='', percentage_to_preserve=20, stock_mem=1024 ** 3,
 
     def preserve(resource, percentage, stock):
         preserved = resource - max(resource * percentage // 100, stock)
-
         return preserved if preserved != 0 else stock
 
     # def preserve(resource, percentage, stock):
@@ -109,9 +114,7 @@ def java_params(tmp_dir='', percentage_to_preserve=20, stock_mem=1024 ** 3,
 
     mem_size = preserve(total_physical_mem_size(), percentage_to_preserve,
                         stock_mem)
-
     cpu_nums = preserve(cpu_count(), percentage_to_preserve, stock_cpu)
-
     tmpdir = tmp_path(tmp_dir)
 
     return params_template.format(bytes2human(mem_min).lower(),
