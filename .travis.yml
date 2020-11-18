@@ -18,7 +18,7 @@ install:
 - conda env update -q -n test-env --file environment.yaml
 - source activate test-env
 - export TEST_ROOT=$PWD/test
-- if [ -f "$TEST_ROOT/data/references/ucsc/hg19/known_variants/dbSNP146_chr22.vcf.gz" ]; then gunzip -k $TEST_ROOT/data/references/ucsc/hg19/known_variants/dbSNP146_chr22.vcf.gz; fi
+- if [ -f "$TEST_ROOT/data/references/ucsc/hg19/known_variants.tar.gz" ]; then tar -zxvf $TEST_ROOT/data/references/ucsc/hg19/known_variants.tar.gz; fi
 
 script:
   - snakemake --snakefile Snakefile --configfile test/files/config.test.yaml --use-conda --dryrun --quiet -d test/workdir
