@@ -21,7 +21,7 @@ def conservative_cpu_count(reserve_cores=1, max_cores=5):
 
 def references_abs_path(ref='references'):
     references = config.get(ref)
-    basepath = references['basepath']
+    basepath = expand_filepath(references['basepath'])
     provider = references['provider']
     release = references['release']
 
@@ -137,3 +137,4 @@ def get_units_by_sample(wildcards, samples, label='units', prefix='before',
 
 def get_odp(wildcards,samples,optical_dup='odp'):
     return "OPTICAL_DUPLICATE_PIXEL_DISTANCE={}".format(samples.loc[wildcards.sample, [optical_dup]].dropna()[0])
+

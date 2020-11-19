@@ -6,7 +6,7 @@ samples: ../files/samples.test.tsv
 units: ../files/units.test.tsv
 
 references:
-    basepath: "../data/references"
+    basepath: "$TEST_ROOT/data/references"
     provider: "ucsc"
     release: "hg19"
 
