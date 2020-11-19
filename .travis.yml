@@ -21,5 +21,5 @@ install:
 - if [ -f "$TEST_ROOT/data/references/ucsc/hg19/known_variants/dbSNP146_chr22.vcf.gz" ]; then gunzip -k $TEST_ROOT/data/references/ucsc/hg19/known_variants/*.gz; fi
 
 script:
-  - snakemake --snakefile Snakefile --configfile test/files/config.test.yaml --use-conda --dryrun --quiet -d test/workdir
+  - snakemake --snakefile Snakefile --configfile test/files/config.test.yaml --use-conda -n --quiet -d test/workdir
   - snakemake --snakefile Snakefile --configfile test/files/config.test.yaml --use-conda --cores all --quiet -d test/workdir
