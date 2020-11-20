@@ -19,7 +19,7 @@ install:
 - source activate test-env
 - export TEST_ROOT=$PWD/test
 - wget https://github.com/solida-core/test-data-DNA/archive/main.zip
-- if [ -f "main.zip" ]; then unzip main.zip && mv test-data-DNA-main/data $TEST_ROOT && rm main.zip; fi
+- if [ -f "main.zip" ]; then unzip main.zip && mv test-data-DNA-main/data $TEST_ROOT && rm -f main.zip && rm -rf test-data-DNA-main; fi
 
 script:
   - snakemake --snakefile Snakefile --configfile test/files/config.test.yaml --use-conda --dryrun --quiet -d test/workdir
