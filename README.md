@@ -1,5 +1,6 @@
 [![depends](https://img.shields.io/badge/depends%20from-bioconda-brightgreen.svg)](http://bioconda.github.io/)
 [![snakemake](https://img.shields.io/badge/snakemake-5.3-brightgreen.svg)](https://snakemake.readthedocs.io/en/stable/)
+[![Travis](https://travis-ci.com/solida-core/dima.svg?branch=master)](https://travis-ci.com/solida-core/dima.svg?branch=master)
 
 # DiMA
 **DiMA** (DNA Mapping) is a pipeline for Next-Generation Sequencing data alignment.
