@@ -1,7 +1,9 @@
 language: python
 python:
+- 3.6
 - 3.7
 - 3.8
+- 3.9
 
 install:
 - sudo apt-get update
@@ -14,9 +16,10 @@ install:
 - conda config --add channels conda-forge
 - conda update -q conda
 - conda info -a
-- conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION
-- conda env update -q -n test-env --file environment.yaml
-- source activate test-env
+- conda install mamba -c conda-forge
+- mamba create -q -n test-env python=$TRAVIS_PYTHON_VERSION
+- mamba env update -q -n test-env --file environment.yaml
+- conda activate test-env
 - export TEST_ROOT=$PWD/test
 - wget https://github.com/solida-core/test-data-DNA/archive/main.zip
 - if [ -f "main.zip" ]; then unzip main.zip && mv test-data-DNA-main/data $TEST_ROOT && rm -f main.zip && rm -rf test-data-DNA-main; fi
@@ -24,4 +27,4 @@ install:
 
 script:
   - snakemake --snakefile Snakefile --configfile test/files/config.test.yaml --use-conda -n --quiet -d test/workdir
-  - snakemake --snakefile Snakefile --configfile test/files/config.test.yaml --use-conda --cores all --quiet -d test/workdir
+  - snakemake --snakefile Snakefile --configfile test/files/config.test.yaml --use-conda --conda-frontend mamba --cores all --quiet -d test/workdir
