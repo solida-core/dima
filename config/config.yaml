@@ -1,9 +1,6 @@
-# This file should contain everything to configure the workflow on a global scale.
-# In case of sample based data, it should be complemented by a samples.tsv file that contains
-# one row per sample. It can be parsed easily via pandas.
-
-samples: ../samples.tsv
-units: ../units.tsv
+# path or URL to sample sheet (TSV format, columns: sample, condition, ...)
+samples: config/samples.yaml
+units: config/units.tsv
 
 references:
     basepath: "path_to_references_data"
@@ -20,9 +17,8 @@ known_variants:
     mills: "known_variants/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
     ph1_indels: "known_variants/1000G_phase1.indels.hg19.sites.vcf"
 
-tmp_dir: "path_to_tmp_dir"
 
-rules:
+params:
     bwa-mem:
         arguments: "-M"
         platform: "illumina"
@@ -36,9 +32,15 @@ rules:
         arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
     picard_WGSMetrics:
         arguments: "MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 READ_LENGTH=150 COUNT_UNPAIRED=true"
-
     gatk_BQSR:
         known_sites:
             - dbsnp
             - mills
             - ph1_indel
+
+
+
+paths:
+  workdir: "/path/to/workdir"
+  results_dir: "/path/to/results_dir"
+  tmp_dir: "/path/to/tmp_dir"

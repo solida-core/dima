@@ -1,0 +1,28 @@
+from snakemake.utils import min_version
+
+##### set minimum snakemake version #####
+min_version("6.15.0")
+
+
+##### setup report #####
+configfile: "config/config.yaml"
+
+
+##### load rules #####
+include: "rules/functions.py"
+include:"rules/trimming.smk"
+include:"rules/alignment.smk"
+include:"rules/samtools.smk"
+include:"rules/picard.smk"
+include:"rules/bsqr.smk"
+
+
+##### local rules #####
+localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
+
+##### target rules #####
+rule all:
+    input:
+        expand("reads/recalibrated/{sample.sample}.dedup.recal.cram",
+            sample=samples.reset_index().itertuples())
+#  REPORT QC
