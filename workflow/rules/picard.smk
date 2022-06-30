@@ -14,7 +14,7 @@ rule mark_duplicates:
     benchmark:
         resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/picard/MarkDuplicates/{sample}.txt")
     params:
-        java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
+        java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1),
         config.get("params").get("picard_MarkDuplicates").get("arguments"),
         lambda wildcards: get_odp(wildcards, samples, 'odp')
     shell:

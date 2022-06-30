@@ -27,12 +27,8 @@ def expand_filepath(filepath):
 
 def get_fastq(wildcards,units):
     if units.loc[wildcards.unit,["fq2"]].isna().all():
-        print("SE")
-        print(units.loc[wildcards.unit,["fq1"]].dropna()[0])
         return expand_filepath(units.loc[wildcards.unit,["fq1"]].dropna()[0])
     else:
-        print("PE")
-        print(units.loc[wildcards.unit,["fq1"]].dropna()[0])
         return expand_filepath(units.loc[wildcards.unit,["fq1"]].dropna()[0]),expand_filepath(units.loc[wildcards.unit,["fq2"]].dropna()[0])
 
 
@@ -85,7 +81,7 @@ def tmp_path(path=''):
     :param path: path
     :return: path
     """
-    default_path = os.getenv('TMPDIR', '/tmp')
+    default_path = os.getenv('TMPDIR', config.get("paths").get("tmp_dir"))
     if path:
         try:
             os.makedirs(path)
@@ -148,11 +144,22 @@ def java_params(tmp_dir='', percentage_to_preserve=20, stock_mem=1024 ** 3,
                                   tmpdir)
 
 
-def get_units_by_sample(wildcards, samples, label='units', prefix='before',
-                        suffix='after'):
+def get_units_by_sample(wildcards, samples, label='units', prefix=resolve_results_filepath(config.get("paths").get("results_dir"),'reads/sorted/'),
+                        suffix='_sorted.cram'):
+    print(prefix+i+suffix for i in samples.loc[wildcards.sample,
+                                                  [label]][0].split(','))
     return [prefix+i+suffix for i in samples.loc[wildcards.sample,
                                                   [label]][0].split(',')]
 
 def get_odp(wildcards,samples,optical_dup='odp'):
     return "OPTICAL_DUPLICATE_PIXEL_DISTANCE={}".format(samples.loc[wildcards.sample, [optical_dup]].dropna()[0])
 
+def get_known_sites(known_sites=['dbsnp','mills','ph1_indel']):
+    known_variants = config.get("resources").get("known_variants")
+    ks = []
+    if len(known_sites) == 0:
+        known_sites = known_variants.keys()
+    for k, v in known_variants.items():
+        if k in known_sites:
+            ks.append("--known-sites {} ".format(v))
+    return "".join(ks)

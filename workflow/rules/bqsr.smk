@@ -1,13 +1,3 @@
-def get_known_sites(known_sites=['dbsnp','mills','ph1_indel']):
-    known_variants = config.get("resources").get("known_variants")
-    ks = []
-    if len(known_sites) == 0:
-        known_sites = known_variants.keys()
-    for k, v in known_variants.items():
-        if k in known_sites:
-            ks.append("--known-sites {} ".format(v[0]))
-    return "".join(ks)
-
 
 rule gatk_BQSR_data_processing:
     input:
@@ -17,7 +7,7 @@ rule gatk_BQSR_data_processing:
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1),
         genome=config.get("resources").get("reference"),
         known_sites=get_known_sites(config.get("params").get("gatk_BQSR").get("known_sites"))
     log:
@@ -44,7 +34,7 @@ rule gatk_ApplyBQSR:
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1),
         genome=config.get("resources").get("reference")
     log:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/gatk/ApplyBQSR/{sample}.post_recalibrate_info.log")
@@ -70,7 +60,7 @@ rule gatk_BQSR_quality_control:
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     params:
-        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1),
         genome=config.get("resources").get("reference"),
         known_sites=get_known_sites(config.get("params").get("gatk_BQSR").get("known_sites"))
     log:
