@@ -1,16 +1,16 @@
 rule samtools_sort:
    input:
-       "reads/aligned/{unit}_fixmate.cram"
+       resolve_results_filepath(config.get("paths").get("results_dir"),"reads/aligned/{unit}_fixmate.cram")
    output:
-       temp("reads/sorted/{unit}_sorted.cram")
+       temp(resolve_results_filepath(config.get("paths").get("results_dir"),"reads/sorted/{unit}_sorted.cram"))
    conda:
-       "../envs/samtools.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/samtools.yaml")
    params:
-       tmp_dir=tmp_path(path=config.get("tmp_dir")),
-       genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+       tmp_dir=tmp_path(path=config.get("paths").get("tmp_dir")),
+       genome=config.get("resources").get("reference"),
        output_fmt="CRAM"
    benchmark:
-       "benchmarks/samtools/sort/{unit}.txt"
+       resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/samtools/sort/{unit}.txt")
    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
    shell:
        "samtools sort "
@@ -30,17 +30,17 @@ rule samtools_merge:
     """
     input:
         lambda wildcards: get_units_by_sample(wildcards, samples,
-                                              prefix='reads/sorted/',
+                                              prefix=resolve_results_filepath(config.get("paths").get("results_dir"),'reads/sorted/'),
                                               suffix='_sorted.cram')
     output:
-        temp("reads/merged/{sample}.cram")
+        temp(resolve_results_filepath(config.get("paths").get("results_dir"),"reads/merged/{sample}.cram"))
     conda:
-        "../envs/samtools.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/samtools.yaml")
     benchmark:
-        "benchmarks/samtools/merge/{sample}.txt"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/samtools/merge/{sample}.txt")
     params:
         cmd='samtools',
-        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        genome=config.get("resources").get("reference"),
         output_fmt="CRAM"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     script:
@@ -49,16 +49,15 @@ rule samtools_merge:
 
 rule samtools_cram_to_bam:
     input:
-        "reads/merged/{sample}.cram"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"reads/merged/{sample}.cram")
     output:
-        temp("reads/merged/{sample}.bam")
+        resolve_results_filepath(config.get("paths").get("results_dir"),"reads/merged/{sample}.bam")
     conda:
-        "../envs/samtools.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/samtools.yaml")
     benchmark:
-        "benchmarks/samtools/cram_to_bam/{sample}.txt"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/samtools/cram_to_bam/{sample}.txt")
     params:
-        genome=resolve_single_filepath(*references_abs_path(),
-                                       config.get("genome_fasta")),
+        genome=config.get("resources").get("reference"),
         output_fmt="BAM"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
@@ -70,38 +69,15 @@ rule samtools_cram_to_bam:
         "{input} "
 
 
-rule samtools_bam_to_cram:
-    input:
-        "reads/recalibrated/{sample}.dedup.recal.bam"
-    output:
-        protected("reads/recalibrated/{sample}.dedup.recal.cram")
-    conda:
-        "../envs/samtools.yaml"
-    benchmark:
-        "benchmarks/samtools/bam_to_cram/{sample}.txt"
-    params:
-        genome=resolve_single_filepath(*references_abs_path(),
-                                       config.get("genome_fasta")),
-        output_fmt="CRAM"
-    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
-    shell:
-        "samtools view -C "
-        "--threads {threads} "
-        "-T {params.genome} "
-        "-o {output} "
-        "-O {params.output_fmt} "
-        "{input} "
-
-
 rule samtools_index:
     input:
-        "reads/recalibrated/{sample}.dedup.recal.cram"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"reads/recalibrated/{sample}.dedup.recal.bam")
     output:
-         "reads/recalibrated/{sample}.dedup.recal.cram.crai"
+         resolve_results_filepath(config.get("paths").get("results_dir"),"reads/recalibrated/{sample}.dedup.recal.bam.bai")
     conda:
-        "../envs/samtools.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/samtools.yaml")
     benchmark:
-        "benchmarks/samtools/index_2/{sample}.txt"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/samtools/index_2/{sample}.txt")
     shell:
         "samtools index "
         "{input} "

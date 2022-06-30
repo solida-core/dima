@@ -1,21 +1,17 @@
 # path or URL to sample sheet (TSV format, columns: sample, condition, ...)
-samples: config/samples.yaml
+samples: config/samples.tsv
 units: config/units.tsv
 
-references:
-    basepath: "path_to_references_data"
-    provider: "_provider_"
-    release: "_release_"
-
-genome_fasta: "_genome_fasta_"
-
-known_variants:
-    dbsnp: "known_variants/dbSNP146_chr.vcf"
-    hapmap: "known_variants/hapmap_3.3.hg19.sites.vcf"
-    g1k: "known_variants/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
-    omni: "known_variants/1000G_omni2.5.hg19.sites.vcf"
-    mills: "known_variants/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
-    ph1_indels: "known_variants/1000G_phase1.indels.hg19.sites.vcf"
+resources:
+    reference: "/path/to/reference/reference_genome.fasta"
+    known_variants:
+        dbsnp: "/path/to/reference/dbSNP146_chr.vcf"
+        hapmap: "/path/to/reference/hapmap_3.3.hg19.sites.vcf"
+        g1k: "/path/to/reference/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
+        omni: "/path/to/reference/1000G_omni2.5.hg19.sites.vcf"
+        mills: "/path/to/reference/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+        ph1_indels: "/path/to/reference/1000G_phase1.indels.hg19.sites.vcf"
+    bed: "hg19.RefSeq.bed" # hg38.RefSeq.bed
 
 
 params:
@@ -41,6 +37,6 @@ params:
 
 
 paths:
-  workdir: "/path/to/workdir"
-  results_dir: "/path/to/results_dir"
-  tmp_dir: "/path/to/tmp_dir"
+    workdir: "/path/to/workdir"
+    results_dir: "/path/to/results_dir"
+    tmp_dir: "/path/to/tmp_dir"

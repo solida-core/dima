@@ -1,0 +1,95 @@
+$schema: "http://json-schema.org/draft-04/schema#"
+
+description: snakemake configuration file
+
+type: object
+
+properties:
+
+  samples:
+    type: string
+  units:
+    type: string
+
+  resources:
+    type: object
+    properties:
+      reference:
+        type: string
+      bed:
+        type: string
+      known_variants:
+        type: object
+        properties:
+          dbsnp:
+            type: string
+          hapmap:
+            type: string
+          g1k:
+            type: string
+          omni:
+            type: string
+          mills:
+            type: string
+          ph1_indels:
+            type: string
+        required:
+          - dbsnp
+          - mills
+          - ph1_indels
+    required:
+      - reference
+      - known_variants
+
+  paths:
+    type: object
+    properties:
+      workdir:
+        type: string
+      results_dir:
+        type: string
+      tmp_dir:
+        type: string
+    required:
+      - workdir
+      - results_dir
+      - tmp_dir
+
+  params:
+    type: object
+    properties:
+      bwa_mem:
+        type: object
+        properties:
+          arguments:
+            type: string
+          platform:
+            type: string
+      trim_galore_pe:
+        type: object
+        properties:
+          arguments:
+            type: string
+      trim_galore_se:
+        type: object
+        properties:
+          arguments:
+            type: string
+      picard_MarkDuplicates:
+        type: object
+        properties:
+          arguments:
+            type: string
+
+    required:
+      - trim_galore_pe
+      - trim_galore_se
+      - picard_MarkDuplicates
+
+
+required:
+  - samples
+  - units
+  - resources
+  - paths
+  - params
