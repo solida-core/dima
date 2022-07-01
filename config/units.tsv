@@ -1,0 +1,5 @@
+sample	unit	fq1	fq2
+NA20804	HSQ1008_141.L001.NA20804	/home/matteo/Scrivania/crs4_pipelines/solida-core/dima/test-data-DNA/data/fastq/NA20804.L001.R1.fq.gz
+NA20804	HSQ1008_141.L005.NA20804	/home/matteo/Scrivania/crs4_pipelines/solida-core/dima/test-data-DNA/data/fastq/NA20804.L005.R1.fq.gz	/home/matteo/Scrivania/crs4_pipelines/solida-core/dima/test-data-DNA/data/fastq/NA20804.L005.R2.fq.gz
+NA20804	HSQ1009_88.L007.NA20804	/home/matteo/Scrivania/crs4_pipelines/solida-core/dima/test-data-DNA/data/fastq/NA20804.L007.R1.fq.gz	/home/matteo/Scrivania/crs4_pipelines/solida-core/dima/test-data-DNA/data/fastq/NA20804.L007.R2.fq.gz
+NA20806	HSQ1009_86.L001.NA20806	/home/matteo/Scrivania/crs4_pipelines/solida-core/dima/test-data-DNA/data/fastq/NA20806.L001.R1.fq.gz

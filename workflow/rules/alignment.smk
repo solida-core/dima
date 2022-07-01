@@ -3,20 +3,20 @@ rule bwa_mem:
     input:
         lambda wildcards: get_trimmed_reads(wildcards,units)
     output:
-        temp("reads/aligned/{unit}_fixmate.cram")
+        resolve_results_filepath(config.get("paths").get("results_dir"),"reads/aligned/{unit}_fixmate.cram")
     conda:
-        "../envs/bwa_mem.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/bwa_mem.yaml")
     params:
         sample=lambda wildcards: '.'.join(wildcards.unit.split('.')[2:]),
-        custom=config.get("rules").get("bwa-mem").get("arguments"),
-        platform=config.get("rules").get("bwa-mem").get("platform"),
+        custom=config.get("params").get("bwa-mem").get("arguments"),
+        platform=config.get("params").get("bwa-mem").get("platform"),
         platform_unit=lambda wildcards: '.'.join(wildcards.unit.split('.')[:-1]),
-        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        genome=config.get("resources").get("reference"),
         output_fmt="CRAM"
     log:
-        "logs/bwa_mem/{unit}.log"
+        resolve_results_filepath(config.get("paths").get("results_dir"),resolve_results_filepath(config.get("paths").get("results_dir"),"logs/bwa_mem/{unit}.log"))
     benchmark:
-        "benchmarks/bwa/mem/{unit}.txt"
+        resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/bwa/mem/{unit}.txt")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
         'bwa mem {params.custom} '

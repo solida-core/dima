@@ -1,0 +1,42 @@
+# path or URL to sample sheet (TSV format, columns: sample, condition, ...)
+samples: config/samples.tsv
+units: config/units.tsv
+
+resources:
+    reference: "/path/to/reference/reference_genome.fasta"
+    known_variants:
+        dbsnp: "/path/to/reference/dbSNP146_chr.vcf"
+        hapmap: "/path/to/reference/hapmap_3.3.hg19.sites.vcf"
+        g1k: "/path/to/reference/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
+        omni: "/path/to/reference/1000G_omni2.5.hg19.sites.vcf"
+        mills: "/path/to/reference/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+        ph1_indels: "/path/to/reference/1000G_phase1.indels.hg19.sites.vcf"
+    bed: "hg19.RefSeq.bed" # hg38.RefSeq.bed
+
+
+params:
+    bwa-mem:
+        arguments: "-M"
+        platform: "illumina"
+    multiqc:
+        arguments: ""
+    trim_galore_pe:
+        arguments: "--paired -q 20 "
+    trim_galore_se:
+        arguments: "-q 20 "
+    picard_MarkDuplicates:
+        arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
+    picard_WGSMetrics:
+        arguments: "MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 READ_LENGTH=150 COUNT_UNPAIRED=true"
+    gatk_BQSR:
+        known_sites:
+            - dbsnp
+            - mills
+            - ph1_indel
+
+
+
+paths:
+    workdir: "/path/to/workdir"
+    results_dir: "/path/to/results_dir"
+    tmp_dir: "/path/to/tmp_dir"

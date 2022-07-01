@@ -1,4 +1,4 @@
 channels:
   - bioconda
 dependencies:
-  - samtools=1.11
+  - trim-galore=0.6.7

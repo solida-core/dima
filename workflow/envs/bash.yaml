@@ -1,4 +1,5 @@
 channels:
+  - conda-forge
   - anaconda
 dependencies:
-  - trim-galore=0.6.6
+  - bash

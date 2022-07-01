@@ -1,51 +1,47 @@
-[![depends](https://img.shields.io/badge/depends%20from-bioconda-brightgreen.svg)](http://bioconda.github.io/)
-[![snakemake](https://img.shields.io/badge/snakemake-5.3-brightgreen.svg)](https://snakemake.readthedocs.io/en/stable/)
-[![Travis](https://travis-ci.com/solida-core/dima.svg?branch=master)](https://travis-ci.com/solida-core/dima.svg?branch=master)
+# Snakemake workflow: DiMA
+[![Snakemake](https://img.shields.io/badge/snakemake-≥6.15.0-brightgreen.svg)](https://snakemake.bitbucket.io)
 
-# DiMA
-**DiMA** (DNA Mapping) is a pipeline for Next-Generation Sequencing data alignment.
+This workflow performs mapping of single-end and paired-end reads in fastq format against a reference genome to produce a deduplicated and recalibrated BAM file.
 
-All **[solida-core](https://github.com/solida-core)** workflows follow GATK Best Practices for Germline Variant Discovery, with the incorporation of further improvements and refinements after their testing with real data in various [CRS4 Next Generation Sequencing Core Facility](http://next.crs4.it) research sequencing projects.
+DiMA is part of the Snakemake-based pipelines collection [solida-core](https://github.com/solida-core) developed and manteined at [CRS4](https://www.crs4.it). 
+<p align="center">
+<img align="center" src="https://www.crs4.it/wp-content/uploads/2020/11/CRS4-1.jpg" width="200" height="80" alt="www.crs4.it"/>
+</p>
 
-Pipelines are based on [Snakemake](https://snakemake.readthedocs.io/en/stable/), a workflow management system that provides all the features needed to create reproducible and scalable data analyses.
+## Authors
 
-Software dependencies are specified into the `environment.yaml` file and directly managed by Snakemake using [Conda](https://docs.conda.io/en/latest/miniconda.html), ensuring the reproducibility of the workflow on a great number of different computing environments such as workstations, clusters and cloud environments.
+* Matteo Massidda (@massiddaMT)
+* Rossano Atzeni (@ratzeni)
 
+## Usage
 
-### Pipeline Overview
-The pipeline workflow is aimed at [_Mapping_](docs/dima_workflow.md#mapping) paired-end reads in fastq format against a reference genome to produce a deduplicated and recalibrated BAM file.
+The usage of this workflow is described in the [Snakemake Workflow Catalog](https://snakemake.github.io/snakemake-workflow-catalog?usage=solida-core/dima).
 
-Obtained BAM files can be then included in Variant Calling processes or visualized with tools like [IGV]().
-DiMA pipeline is included in other solida-core pipelines that requires the mapping step (i.e. [DiVA]()). 
-The standalone usage is recommended for analysis which requires BAM files and not a Variant Calling step.
+If you use this workflow in a paper, don't forget to give credits to the authors by citing the URL of this (original) repository and its DOI (see above).
 
-A complete view of the analysis workflow is provided by the pipeline's [graph](images/dima.png).
-
-
-
-### Pipeline Handbook
-**DiMA** pipeline documentation can be found in the `docs/` directory:
-
-
-1. [Pipeline Structure:](https://github.com/solida-core/docs/blob/master/pipeline_structure.md)
-    * [Snakefile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#snakefile)
-    * [Configfile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#configfile)
-    * [Rules](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#rules)
-    * [Envs](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#envs)
-2. [Pipeline Workflow](docs/dima_workflow.md)
-3. [Required Files:]()
-    * [Reference files](docs/reference_files.md)
-    * [User files](docs/user_files.md)
-4. [Running the pipeline:]()
-    * [Manual Snakemake Usage](docs/dima_snakemake.md)
-    * [SOLIDA:]()
-        * [CLI - Command Line Interface](https://github.com/solida-core/solida/blob/master/README.md)
-        * [GUI - Graphical User Interface]()
-
-
-
-
-
-
-### Contact us
-[support@solida-core](mailto:m.massidda@crs4.it) 
+## INSTRUCTIONS
+Create a virtual environment with the command:
+```commandline
+mamba create -c bioconda -c conda-forge --name snakemake snakemake=6.15 snakedeploy
+```
+and activate it:
+```commandline
+conda activate snakemake
+```
+We get some public data to test the pipeline. You can directly clone in this folder from github, just type:
+```commandline
+git clone https://github.com/solida-core/test-data-DNA.git
+```
+You can then perform the pipeline deploy defining a directory `my_dest_dir` for analysis output and a pipeline tag for a specific version:
+```bash
+snakedeploy deploy-workflow https://github.com/solida-core/dima 
+                    my_desd_dir 
+```
+To run the pipeline, go inside the deployed pipeline folder and use the command:
+```bash
+snakemake --use-conda -p --cores all
+```
+You can generate analysis report with the command:
+```bash
+snakemake --report report.zip --cores all
+```
