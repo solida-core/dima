@@ -1,7 +1,9 @@
 
 rule pre_rename_fastq_pe:
     input:
-        lambda wildcards: get_fastq(wildcards,units)
+        # lambda wildcards: get_fastq(wildcards,units)
+        r1=lambda wildcards: get_a_fastq(wildcards, units, fq="fq1"),
+        r2=lambda wildcards: get_a_fastq(wildcards, units, fq="fq2")
     output:
         r1=resolve_results_filepath(config.get("paths").get("results_dir"),"reads/untrimmed/{unit}-R1.fq.gz"),
         r2=resolve_results_filepath(config.get("paths").get("results_dir"),"reads/untrimmed/{unit}-R2.fq.gz")
@@ -10,8 +12,8 @@ rule pre_rename_fastq_pe:
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/bash.yaml")
     shell:
-        "cp {input[0]} {output.r1} &&"
-        "cp {input[1]} {output.r2} "
+        "cp {input.r1} {output.r1} &&"
+        "cp {input.r2} {output.r2} "
         ">& {log} "
 
 
@@ -28,7 +30,6 @@ rule trim_galore_pe:
         extra=config.get("params").get("trim_galore_pe").get("arguments"),
         outdir= lambda w,output: os.path.dirname(output[0]),
         qc_dir=resolve_results_filepath(config.get("paths").get("results_dir"),"qc/fastqc")
-        # outdir=resolve_results_filepath(config.get("paths").get("results_dir"),"reads/trimmed/")
     log:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/trim_galore/{unit}.log")
     benchmark:
@@ -48,8 +49,8 @@ rule trim_galore_pe:
 
 rule post_rename_fastq_pe:
     input:
-        fq1=rules.trim_galore_pe.output.fq1,
-        fq2=rules.trim_galore_pe.output.fq2
+        r1=rules.trim_galore_pe.output.fq1,
+        r2=rules.trim_galore_pe.output.fq2
     output:
         r1=resolve_results_filepath(config.get("paths").get("results_dir"),"reads/trimmed/{unit}-R1-trimmed.fq.gz"),
         r2=resolve_results_filepath(config.get("paths").get("results_dir"),"reads/trimmed/{unit}-R2-trimmed.fq.gz")
@@ -58,6 +59,6 @@ rule post_rename_fastq_pe:
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/bash.yaml")
     shell:
-        "mv {input.fq1} {output.r1} &&"
-        "mv {input.fq2} {output.r2} "
+        "mv {input.r1} {output.r1} &&"
+        "mv {input.r2} {output.r2} "
         ">& {log} "

@@ -31,6 +31,17 @@ def get_fastq(wildcards,units):
     else:
         return expand_filepath(units.loc[wildcards.unit,["fq1"]].dropna()[0]),expand_filepath(units.loc[wildcards.unit,["fq2"]].dropna()[0])
 
+def get_a_fastq(wildcards,units, fq="fq1"):
+        return expand_filepath(units.loc[wildcards.unit,[fq]].dropna()[0])
+
+def get_r2_fastq(wildcards,units):
+    if units.loc[wildcards.unit,["fq2"]].isna().all():
+        return expand_filepath(units.loc[wildcards.unit,["fq1"]].dropna()[0])
+    else:
+        return expand_filepath(units.loc[wildcards.unit,["fq1"]].dropna()[0]),expand_filepath(units.loc[wildcards.unit,["fq2"]].dropna()[0])
+
+
+
 
 def get_trimmed_reads(wildcards,units):
     if units.loc[wildcards.unit,["fq2"]].isna().all():
@@ -146,8 +157,6 @@ def java_params(tmp_dir='', percentage_to_preserve=20, stock_mem=1024 ** 3,
 
 def get_units_by_sample(wildcards, samples, label='units', prefix=resolve_results_filepath(config.get("paths").get("results_dir"),'reads/sorted/'),
                         suffix='_sorted.cram'):
-    print(prefix+i+suffix for i in samples.loc[wildcards.sample,
-                                                  [label]][0].split(','))
     return [prefix+i+suffix for i in samples.loc[wildcards.sample,
                                                   [label]][0].split(',')]
 

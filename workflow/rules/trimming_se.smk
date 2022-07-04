@@ -23,7 +23,6 @@ rule trim_galore_se:
         extra=config.get("params").get("trim_galore_se").get("arguments"),
         outdir=lambda w, output: os.path.dirname(output[0]),
         qc_dir=resolve_results_filepath(config.get("paths").get("results_dir"),"qc/fastqc")
-        # outdir=resolve_results_filepath(config.get("paths").get("results_dir"),"reads/trimmed/se/")
     log:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/trim_galore/{unit}.log")
     benchmark:
