@@ -13,6 +13,8 @@ rule samtools_sort:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/samtools/sort/{unit}_sort.log")
     benchmark:
         resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/samtools/sort/{unit}.txt")
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
         "samtools sort "
@@ -42,6 +44,8 @@ rule samtools_merge:
     log:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/samtools/merge/{sample}_merge.log")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     script:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/scripts/samtools_merge.py")
 
@@ -61,6 +65,8 @@ rule samtools_cram_to_bam:
         genome=config.get("resources").get("reference"),
         output_fmt="BAM"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "samtools view -b "
         "--threads {threads} "
@@ -82,6 +88,8 @@ rule samtools_index:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/samtools/index/{sample}_index.log")
     benchmark:
         resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/samtools/index_2/{sample}.txt")
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "samtools index "
         "{input} "

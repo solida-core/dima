@@ -17,6 +17,8 @@ rule bwa_mem:
         resolve_results_filepath(config.get("paths").get("results_dir"),resolve_results_filepath(config.get("paths").get("results_dir"),"logs/bwa_mem/{unit}.log"))
     benchmark:
         resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/bwa/mem/{unit}.txt")
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
         'bwa mem {params.custom} '

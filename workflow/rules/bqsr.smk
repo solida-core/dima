@@ -14,6 +14,8 @@ rule gatk_BQSR_data_processing:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/gatk/BaseRecalibrator/{sample}_BQSR_data_processing_info.log")
     benchmark:
         resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/gatk/BaseRecalibrator/{sample}_BaseRecalibrator_data_processing_info.txt")
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
         "gatk BaseRecalibrator --java-options {params.custom} "
@@ -40,6 +42,8 @@ rule gatk_ApplyBQSR:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/gatk/ApplyBQSR/{sample}.post_recalibrate_info.log")
     benchmark:
         resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/gatk/ApplyBQSR/{sample}.post_recalibrate_info.txt")
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
         "gatk ApplyBQSR --java-options {params.custom} "
@@ -68,6 +72,8 @@ rule gatk_BQSR_quality_control:
         a=resolve_results_filepath(config.get("paths").get("results_dir"),"logs/gatk/AnalyzeCovariates/{sample}_BQSR_quality_control_cov_info.log")
     benchmark:
         resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/gatk/BaseRecalibrator/{sample}_BQSR_quality_control_info.txt")
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
         "gatk BaseRecalibrator --java-options {params.custom} "

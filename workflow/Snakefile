@@ -8,6 +8,8 @@ min_version("6.15.0")
 configfile: "config/config.yaml"
 
 
+
+
 ##### load rules #####
 include: "rules/common.smk"
 include: "rules/trimming_se.smk"
@@ -24,4 +26,8 @@ localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
 ##### target rules #####
 rule all:
     input:
-        expand(resolve_results_filepath(config.get("paths").get("results_dir"),"reads/recalibrated/{sample.sample}.dedup.recal.bam"),sample=samples.reset_index().itertuples())
+        expand(resolve_results_filepath(config.get("paths").get("results_dir"),"reads/recalibrated/{sample.sample}.dedup.recal.bam"),sample=samples.reset_index().itertuples()),
+        expand(resolve_results_filepath(config.get("paths").get("results_dir"),"reads/recalibrated/{sample.sample}.dedup.recal.is.txt"),sample=samples.reset_index().itertuples()),
+        expand(resolve_results_filepath(config.get("paths").get("results_dir"),"qc/picard/{sample.sample}_gc_bias_metrics.txt"),sample=samples.reset_index().itertuples()),
+        expand(resolve_results_filepath(config.get("paths").get("results_dir"),"reads/recalibrated/{sample.sample}.dedup.recal.hs.txt"),sample=samples.reset_index().itertuples())
+

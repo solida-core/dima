@@ -8,6 +8,8 @@ rule pre_rename_fastq_se:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/bash/{unit}_cp.log")
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/bash.yaml")
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "cp {input} {output.r1} "
         ">& {log} "
@@ -29,6 +31,8 @@ rule trim_galore_se:
         resolve_results_filepath(config.get("paths").get("results_dir"),"benchmarks/trim_galore/{unit}.txt")
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/trim_galore.yaml")
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     threads: (conservative_cpu_count(reserve_cores=2, max_cores=99))/2 if (conservative_cpu_count(reserve_cores=2, max_cores=99)) >2 else 1
     shell:
         "mkdir -p {params.qc_dir}; "
@@ -49,6 +53,8 @@ rule post_rename_fastq_se:
         resolve_results_filepath(config.get("paths").get("results_dir"),"logs/bash/{unit}_mv.log")
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/bash.yaml")
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "mv {input} {output.r1}"
         ">& {log} "
