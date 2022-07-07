@@ -16,7 +16,7 @@ include: "rules/alignment.smk"
 include: "rules/samtools.smk"
 include: "rules/picard.smk"
 include: "rules/bqsr.smk"
-
+include: "rules/coverage.smk"
 
 ##### local rules #####
 localrules:
@@ -56,3 +56,11 @@ rule all:
             ),
             sample=samples.reset_index().itertuples(),
         ),
+        expand(
+            resolve_results_filepath(
+                config.get("paths").get("results_dir"),
+                "results/tsv/{sample.sample}.target_coverage.tsv",
+            ),
+            sample=samples.reset_index().itertuples(),
+        ),
+
