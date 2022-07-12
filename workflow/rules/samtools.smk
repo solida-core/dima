@@ -70,9 +70,7 @@ rule samtools_merge:
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),
     script:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/scripts/samtools_merge.py"
-        )
+        "workflow/scripts/samtools_merge.py"
 
 
 rule samtools_cram_to_bam:
