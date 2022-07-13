@@ -21,7 +21,12 @@ rule jvarkit_target_coverage:
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"),"workflow/envs/jvarkit.yaml"
-        )
+        ),
+    log:
+        resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "logs/jvarkit/{sample}_coverage.log",
+        ),
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),
     shell:
@@ -31,6 +36,7 @@ rule jvarkit_target_coverage:
         "-R {params.genome} "
         "{input.bam} "
         "-o {output.tsv} "
+        ">& {log}"
 
 
 
@@ -56,6 +62,11 @@ rule parse_jvarkit_coverage:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/r_env.yaml"
         )
+    log:
+        resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "logs/jvarkit/{sample}_parsing.log",
+        ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),
