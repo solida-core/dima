@@ -12,6 +12,7 @@ resources:
         mills: "/path/to/reference/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
         ph1_indels: "/path/to/reference/1000G_phase1.indels.hg19.sites.vcf"
     bed: "hg19.RefSeq.bed" # hg38.RefSeq.bed
+    probes: "hsprobes.bed"
 
 
 params:
@@ -33,6 +34,8 @@ params:
             - dbsnp
             - mills
             - ph1_indel
+    jvarkit:
+        min_coverage: "20"
 
 
 
