@@ -10,9 +10,7 @@ rule gatk_BQSR_data_processing:
             "reads/recalibrated/{sample}.recalibrate.grp",
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/gatk.yaml"
-        )
+        "../envs/gatk.yaml"
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1),
         genome=config.get("resources").get("reference"),
@@ -64,9 +62,7 @@ rule gatk_ApplyBQSR:
             )
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/gatk.yaml"
-        )
+        "../envs/gatk.yaml"
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1),
         genome=config.get("resources").get("reference"),
@@ -112,9 +108,7 @@ rule gatk_BQSR_quality_control:
             "reads/recalibrated/{sample}.recalibration_plots.pdf",
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/gatk.yaml"
-        )
+        "../envs/gatk.yaml"
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1),
         genome=config.get("resources").get("reference"),

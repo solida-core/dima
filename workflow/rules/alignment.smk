@@ -7,9 +7,7 @@ rule bwa_mem:
             config.get("paths").get("results_dir"), "reads/aligned/{unit}_fixmate.cram"
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/bwa_mem.yaml"
-        )
+        "../envs/bwa_mem.yaml"
     params:
         sample=lambda wildcards: ".".join(wildcards.unit.split(".")[2:]),
         custom=config.get("params").get("bwa-mem").get("arguments"),

@@ -12,9 +12,7 @@ rule pre_rename_fastq_se:
             config.get("paths").get("results_dir"), "logs/bash/{unit}_cp.log"
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/bash.yaml"
-        )
+        "../envs/bash.yaml"
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),
     shell:
@@ -49,9 +47,7 @@ rule trim_galore_se:
             config.get("paths").get("results_dir"), "benchmarks/trim_galore/{unit}.txt"
         )
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/trim_galore.yaml"
-        )
+        "../envs/trim_galore.yaml"
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),
     threads: threads_calculator(read_type="se")
@@ -78,9 +74,7 @@ rule post_rename_fastq_se:
             config.get("paths").get("results_dir"), "logs/bash/{unit}_mv.log"
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/bash.yaml"
-        )
+        "../envs/bash.yaml"
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),
     shell:

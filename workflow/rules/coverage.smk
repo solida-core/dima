@@ -19,9 +19,7 @@ rule jvarkit_target_coverage:
         mincov=config.get("params").get("jvarkit").get("min_coverage"),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"),"workflow/envs/jvarkit.yaml"
-        ),
+        "../envs/jvarkit.yaml"
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -59,9 +57,7 @@ rule parse_jvarkit_coverage:
     params:
         target_intervals=config.get("resources").get("bed"),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/r_env.yaml"
-        )
+        "../envs/r_env.yaml"
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),

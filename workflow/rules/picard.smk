@@ -21,9 +21,7 @@ rule mark_duplicates:
             "logs/picard/MarkDuplicates/{sample}.log",
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/picard.yaml"
-        )
+        "../envs/picard.yaml"
     benchmark:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -58,9 +56,7 @@ rule picard_pre_HsMetrics_probes:
             )
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"
-        )
+        "../envs/samtools.yaml"
     params:
         probes=config.get("resources").get("probes"),
     resources:
@@ -89,9 +85,7 @@ rule picard_pre_HsMetrics_target:
             )
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"
-        )
+        "../envs/samtools.yaml"
     params:
         hsTarget=config.get("resources").get("bed"),
     resources:
@@ -129,9 +123,7 @@ rule picard_HsMetrics:
             "reads/recalibrated/{sample}.per_target_coverage.txt",
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/picard.yaml"
-        )
+        "../envs/picard.yaml"
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1),
         params=config.get("params").get("picard_HSmetrics").get("arguments"),
@@ -175,9 +167,7 @@ rule picard_InsertSizeMetrics:
             "reads/recalibrated/{sample}.dedup.recal.is.pdf",
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/picard.yaml"
-        )
+        "../envs/picard.yaml"
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1),
     log:
@@ -230,9 +220,7 @@ rule picard_gc_bias:
             "logs/picard/CollectGcBiasMetrics/{sample}.gcbias.log",
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/picard.yaml"
-        )
+        "../envs/picard.yaml"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),

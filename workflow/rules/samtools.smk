@@ -8,9 +8,7 @@ rule samtools_sort:
             config.get("paths").get("results_dir"), "reads/sorted/{unit}_sorted.cram"
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"
-        )
+        "../envs/samtools.yaml"
     params:
         tmp_dir=tmp_path(path=config.get("paths").get("tmp_dir")),
         genome=config.get("resources").get("reference"),
@@ -49,9 +47,7 @@ rule samtools_merge:
             )
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"
-        )
+        "../envs/samtools.yaml"
     benchmark:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -83,9 +79,7 @@ rule samtools_cram_to_bam:
             config.get("paths").get("results_dir"), "reads/merged/{sample}.bam"
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"
-        )
+        "../envs/samtools.yaml"
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -124,9 +118,7 @@ rule samtools_index:
             "reads/recalibrated/{sample}.dedup.recal.bam.bai",
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"
-        )
+        "../envs/samtools.yaml"
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
