@@ -11,9 +11,7 @@ rule jvarkit_target_coverage:
             "results/stats/{sample}_target_coverage.tsv",
         ),
     params:
-        custom=java_params(
-            tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1
-        ),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=1),
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
         mincov=config.get("params").get("jvarkit").get("min_coverage"),
@@ -35,8 +33,6 @@ rule jvarkit_target_coverage:
         "{input.bam} "
         "-o {output.tsv} "
         ">& {log}"
-
-
 
 
 rule parse_jvarkit_coverage:

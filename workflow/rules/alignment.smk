@@ -17,10 +17,7 @@ rule bwa_mem:
         output_fmt="CRAM",
     log:
         resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            resolve_results_filepath(
-                config.get("paths").get("results_dir"), "logs/bwa_mem/{unit}.log"
-            ),
+            config.get("paths").get("results_dir"), "logs/bwa_mem/{unit}.log"
         ),
     benchmark:
         resolve_results_filepath(

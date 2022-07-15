@@ -18,6 +18,7 @@ include: "rules/picard.smk"
 include: "rules/bqsr.smk"
 include: "rules/coverage.smk"
 
+
 ##### local rules #####
 localrules:
     all,
@@ -63,4 +64,3 @@ rule all:
             ),
             sample=samples.reset_index().itertuples(),
         ),
-
